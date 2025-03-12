@@ -529,9 +529,13 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
       case 'ระหว่างน้ำท่วม':
         return const Color(0xFF4865E7);
       case 'หลังน้ำท่วม':
-        return const Color(0xFFFF6B6B);
+        return const Color.fromARGB(255, 195, 101, 202);
       case 'สุขภาพ':
         return Colors.red;
+      case 'การเคลื่อนย้าย':
+        return const Color.fromARGB(255, 20, 149, 74);
+      case 'อาหารและน้ำ':
+        return const Color.fromARGB(255, 252, 126, 0);
       default:
         return Colors.indigo;
     }
@@ -547,6 +551,11 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
         return Icons.cleaning_services;
       case 'สุขภาพ':
         return Icons.favorite;
+      case 'การเคลื่อนย้าย':
+        return Icons.directions_walk;
+        
+      case 'อาหารและน้ำ':
+        return Icons.local_dining;
       default:
         return Icons.info;
     }
