@@ -15,14 +15,14 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String settings = '/settings';
-  
+
   static Map<String, WidgetBuilder> get routes => {
-    home: (context) => const HomeScreen(),
-    login: (context) => const LoginScreen(),
-    register: (context) => const RegisterScreen(),
-    survivalGuide: (context) => const SurvivalGuideScreen(),
-    healthCheck: (context) => const HealthCheckScreen(),
-    emergencyContacts: (context) => const EmergencyContactsScreen(),
-    settings: (context) => const SettingsScreen(),
-  };
+        home: (context) => const HomeScreen(),
+        login: (context) => const LoginScreen(),
+        register: (context) => const RegisterScreen(),
+        survivalGuide: (context) => const SurvivalGuideScreen(),
+        healthCheck: (context) => const DiseaseAnalyzerScreen(),
+        emergencyContacts: (context) => const EmergencyContactsScreen(),
+        settings: (context) => const SettingsScreen(),
+      };
 }

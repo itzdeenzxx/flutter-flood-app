@@ -1,3 +1,4 @@
+// models/health_check.dart
 class HealthCheck {
   final String id;
   final DateTime date;
@@ -19,46 +20,17 @@ class HealthCheck {
     this.additionalNotes,
   });
 
-  factory HealthCheck.fromJson(Map<String, dynamic> json) {
-    return HealthCheck(
-      id: json['id'],
-      date: DateTime.parse(json['date']),
-      hasFever: json['hasFever'],
-      hasCough: json['hasCough'],
-      hasSkinRash: json['hasSkinRash'],
-      hasDiarrhea: json['hasDiarrhea'],
-      hasWaterContamination: json['hasWaterContamination'],
-      additionalNotes: json['additionalNotes'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'date': date.toIso8601String(),
-      'hasFever': hasFever,
-      'hasCough': hasCough,
-      'hasSkinRash': hasSkinRash,
-      'hasDiarrhea': hasDiarrhea,
-      'hasWaterContamination': hasWaterContamination,
-      'additionalNotes': additionalNotes,
-    };
-  }
-
-  int getRiskScore() {
+  // คำนวณระดับความเสี่ยง
+  String getRiskLevel() {
     int score = 0;
-    if (hasFever) score += 2;
-    if (hasCough) score += 1;
+    if (hasFever) score += 3;
+    if (hasCough) score += 2;
     if (hasSkinRash) score += 2;
     if (hasDiarrhea) score += 3;
-    if (hasWaterContamination) score += 2;
-    return score;
-  }
+    if (hasWaterContamination) score += 4;
 
-  String getRiskLevel() {
-    int score = getRiskScore();
-    if (score <= 2) return 'ต่ำ';
-    if (score <= 5) return 'ปานกลาง';
-    return 'สูง';
+    if (score >= 8) return 'สูง';
+    if (score >= 5) return 'ปานกลาง';
+    return 'ต่ำ';
   }
 }

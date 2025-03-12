@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flood_survival_app/models/health_check.dart';
-import 'package:flood_survival_app/widgets/bottom_navigation.dart';
+import 'package:uuid/uuid.dart'; // ต้องติดตั้ง uuid package
+import '../services/disease_analysis_service.dart';
+import '../screens/disease_result_screen.dart';
+import '../widgets/bottom_navigation.dart';
 
-class HealthCheckScreen extends StatefulWidget {
-  const HealthCheckScreen({Key? key}) : super(key: key);
+class DiseaseAnalyzerScreen extends StatefulWidget {
+  const DiseaseAnalyzerScreen({Key? key}) : super(key: key);
 
   @override
-  State<HealthCheckScreen> createState() => _HealthCheckScreenState();
+  State<DiseaseAnalyzerScreen> createState() => _DiseaseAnalyzerScreenState();
 }
 
-class _HealthCheckScreenState extends State<HealthCheckScreen> {
+class _DiseaseAnalyzerScreenState extends State<DiseaseAnalyzerScreen> {
   bool _hasFever = false;
   bool _hasCough = false;
   bool _hasSkinRash = false;
   bool _hasDiarrhea = false;
   bool _hasWaterContamination = false;
-  final TextEditingController _notesController = TextEditingController();
+  bool _hasHeadache = false;
+  bool _hasMusclePain = false;
+  bool _hasDifficultBreathing = false;
+
+  final TextEditingController _additionalSymptomsController =
+      TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ตรวจสุขภาพ'),
+        title: const Text('วิเคราะห์โรคจากน้ำท่วม'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -29,33 +37,20 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ส่วนหัวของหน้า
               _buildHeader(),
-              
               const SizedBox(height: 24),
-              
-              // รายการตรวจสอบอาการ
               _buildSymptomChecklist(),
-              
               const SizedBox(height: 24),
-              
-              // ช่องสำหรับบันทึกเพิ่มเติม
-              _buildNotesSection(),
-              
+              _buildAdditionalSymptoms(),
               const SizedBox(height: 32),
-              
-              // ปุ่มบันทึกผลตรวจสุขภาพ
-              _buildSaveButton(),
-              
+              _buildAnalyzeButton(),
               const SizedBox(height: 24),
-              
-              // คำแนะนำสุขภาพทั่วไป
-              _buildHealthTips(),
+              _buildInfoSection(),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 2),
+      bottomNavigationBar: const AppBottomNavigation(currentIndex: 3),
     );
   }
 
@@ -64,7 +59,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'ตรวจสุขภาพประจำวัน',
+          'วิเคราะห์ความเสี่ยงโรคจากน้ำท่วม',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -72,7 +67,7 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'บันทึกอาการของคุณเพื่อติดตามสุขภาพในช่วงน้ำท่วม',
+          'เลือกอาการที่คุณพบเพื่อรับการวิเคราะห์ความเสี่ยงโรคที่อาจเกิดจากน้ำท่วม',
           style: TextStyle(
             color: Colors.grey[600],
             fontSize: 14,
@@ -82,17 +77,17 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.1),
+            color: Colors.amber.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.blue.withOpacity(0.3)),
+            border: Border.all(color: Colors.amber.withOpacity(0.3)),
           ),
           child: Row(
             children: [
-              Icon(Icons.info, color: Colors.blue[700]),
+              Icon(Icons.warning_amber_rounded, color: Colors.amber[700]),
               const SizedBox(width: 12),
               const Expanded(
                 child: Text(
-                  'การตรวจสุขภาพอย่างสม่ำเสมอช่วยป้องกันโรคที่มากับน้ำท่วมได้',
+                  'ข้อมูลนี้เป็นเพียงการวิเคราะห์เบื้องต้น ไม่สามารถใช้แทนการวินิจฉัยจากแพทย์ได้',
                   style: TextStyle(
                     color: Colors.black87,
                   ),
@@ -165,6 +160,36 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
               },
             ),
             _buildCheckItem(
+              'ปวดศีรษะ',
+              'ปวดรุนแรงหรือต่อเนื่อง',
+              _hasHeadache,
+              (value) {
+                setState(() {
+                  _hasHeadache = value ?? false;
+                });
+              },
+            ),
+            _buildCheckItem(
+              'ปวดเมื่อยกล้ามเนื้อ',
+              'รู้สึกปวดเมื่อยตามร่างกาย',
+              _hasMusclePain,
+              (value) {
+                setState(() {
+                  _hasMusclePain = value ?? false;
+                });
+              },
+            ),
+            _buildCheckItem(
+              'หายใจลำบาก',
+              'รู้สึกเหนื่อยหรือหายใจไม่สะดวก',
+              _hasDifficultBreathing,
+              (value) {
+                setState(() {
+                  _hasDifficultBreathing = value ?? false;
+                });
+              },
+            ),
+            _buildCheckItem(
               'สัมผัสน้ำปนเปื้อน',
               'สัมผัสน้ำท่วมที่อาจมีการปนเปื้อน',
               _hasWaterContamination,
@@ -221,12 +246,12 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     );
   }
 
-  Widget _buildNotesSection() {
+  Widget _buildAdditionalSymptoms() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'บันทึกเพิ่มเติม',
+          'อาการอื่นๆ (ถ้ามี)',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -234,10 +259,11 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
         ),
         const SizedBox(height: 8),
         TextField(
-          controller: _notesController,
+          controller: _additionalSymptomsController,
           maxLines: 3,
           decoration: InputDecoration(
-            hintText: 'บันทึกอาการหรือข้อสังเกตเพิ่มเติม...',
+            hintText:
+                'ระบุอาการอื่นๆ ที่พบ เช่น มีบวมตามร่างกาย เวียนศีรษะ คลื่นไส้...',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -249,31 +275,35 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     );
   }
 
-  Widget _buildSaveButton() {
+  Widget _buildAnalyzeButton() {
     return SizedBox(
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-        onPressed: _saveHealthCheck,
+        onPressed: _isLoading ? null : _analyzeDisease,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: const Text(
-          'บันทึกผลตรวจสุขภาพ',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
+        child: _isLoading
+            ? const CircularProgressIndicator(
+                color: Colors.white,
+              )
+            : const Text(
+                'วิเคราะห์ความเสี่ยง',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
       ),
     );
   }
 
-  Widget _buildHealthTips() {
+  Widget _buildInfoSection() {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -285,32 +315,28 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'คำแนะนำสุขภาพช่วงน้ำท่วม',
+              'ระบบวิเคราะห์โรคจากน้ำท่วม',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            _buildTipItem(
-              Icons.water_drop,
-              'ดื่มน้ำสะอาดเท่านั้น',
-              'ใช้น้ำต้มสุกหรือน้ำบรรจุขวดที่ปิดสนิท',
+            Text(
+              'ระบบนี้ใช้ AI วิเคราะห์ความเสี่ยงของโรคที่อาจเกิดจากน้ำท่วมจากอาการที่คุณระบุ ผลวิเคราะห์ที่ได้เป็นเพียงข้อมูลเบื้องต้น ไม่สามารถใช้แทนการวินิจฉัยจากแพทย์ผู้เชี่ยวชาญได้',
+              style: TextStyle(
+                color: Colors.grey[700],
+                fontSize: 14,
+              ),
             ),
-            _buildTipItem(
-              Icons.sanitizer,
-              'ล้างมือบ่อยๆ',
-              'ล้างมือด้วยสบู่และน้ำสะอาดหรือเจลแอลกอฮอล์',
-            ),
-            _buildTipItem(
-              Icons.healing,
-              'ดูแลบาดแผล',
-              'ทำความสะอาดและปิดแผลทันทีหากมีบาดแผลเปิด',
-            ),
-            _buildTipItem(
-              Icons.health_and_safety,
-              'ใส่รองเท้าบูท',
-              'ป้องกันการสัมผัสน้ำโดยตรงเพื่อลดความเสี่ยงโรคผิวหนัง',
+            const SizedBox(height: 16),
+            Text(
+              'หากมีอาการรุนแรงหรือเป็นอันตราย โปรดติดต่อแพทย์หรือหน่วยฉุกเฉินทันที',
+              style: TextStyle(
+                color: Colors.red[700],
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
@@ -318,112 +344,89 @@ class _HealthCheckScreenState extends State<HealthCheckScreen> {
     );
   }
 
-  Widget _buildTipItem(IconData icon, String title, String description) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              icon,
-              color: Theme.of(context).primaryColor,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _saveHealthCheck() {
-    // สร้างข้อมูลตรวจสุขภาพใหม่
-    final healthCheck = HealthCheck(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      date: DateTime.now(),
-      hasFever: _hasFever,
-      hasCough: _hasCough,
-      hasSkinRash: _hasSkinRash,
-      hasDiarrhea: _hasDiarrhea,
-      hasWaterContamination: _hasWaterContamination,
-      additionalNotes: _notesController.text.trim().isNotEmpty
-          ? _notesController.text.trim()
-          : null,
-    );
-
-    // TODO: บันทึกข้อมูลลงฐานข้อมูลหรือใน SharedPreferences
-
-    // คำนวณระดับความเสี่ยง
-    final riskLevel = healthCheck.getRiskLevel();
-    
-    // แสดงข้อความแจ้งผลการบันทึก
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('บันทึกข้อมูลสำเร็จ ระดับความเสี่ยง: $riskLevel'),
-        backgroundColor: riskLevel == 'สูง'
-            ? Colors.red
-            : riskLevel == 'ปานกลาง'
-                ? Colors.orange
-                : Colors.green,
-      ),
-    );
-
-    // แสดงข้อความแนะนำตามระดับความเสี่ยง
-    if (riskLevel == 'สูง') {
-      _showRiskAlert();
-    }
-  }
-
-  void _showRiskAlert() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('คำเตือน: ความเสี่ยงสูง'),
-        content: const Text(
-          'คุณมีความเสี่ยงสูงต่อการเกิดโรคที่มากับน้ำท่วม โปรดพบแพทย์โดยเร็วที่สุด',
+  void _analyzeDisease() async {
+    // ตรวจสอบว่ามีการเลือกอาการอย่างน้อย 1 อย่าง
+    if (!_hasFever &&
+        !_hasCough &&
+        !_hasSkinRash &&
+        !_hasDiarrhea &&
+        !_hasWaterContamination &&
+        !_hasHeadache &&
+        !_hasMusclePain &&
+        !_hasDifficultBreathing &&
+        _additionalSymptomsController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('กรุณาเลือกอาการอย่างน้อย 1 อย่าง'),
+          backgroundColor: Colors.red,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('เข้าใจแล้ว'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // TODO: นำทางไปยังหน้าติดต่อฉุกเฉิน
-            },
-            child: const Text('ติดต่อฉุกเฉิน'),
-          ),
-        ],
-      ),
-    );
+      );
+      return;
+    }
+
+    // สร้างข้อความสำหรับส่งไปยัง API
+    List<String> symptoms = [];
+    if (_hasFever) symptoms.add('มีไข้');
+    if (_hasCough) symptoms.add('ไอ');
+    if (_hasSkinRash) symptoms.add('มีผื่นที่ผิวหนัง');
+    if (_hasDiarrhea) symptoms.add('ท้องเสีย');
+    if (_hasHeadache) symptoms.add('ปวดศีรษะ');
+    if (_hasMusclePain) symptoms.add('ปวดเมื่อยกล้ามเนื้อ');
+    if (_hasDifficultBreathing) symptoms.add('หายใจลำบาก');
+    if (_hasWaterContamination) symptoms.add('สัมผัสน้ำที่ปนเปื้อน');
+
+    // เพิ่มอาการอื่นๆ จากช่อง input
+    if (_additionalSymptomsController.text.trim().isNotEmpty) {
+      symptoms.add('อาการอื่นๆ: ${_additionalSymptomsController.text.trim()}');
+    }
+
+    // สร้างข้อความสำหรับส่งไปยัง API
+    final symptomsText = '''
+อาการที่พบในผู้ป่วยในพื้นที่ประสบอุทกภัย:
+${symptoms.map((s) => '- $s').join('\n')}
+''';
+
+    // แสดง loading indicator
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // สร้าง session ID สำหรับการเรียก API
+      final sessionId = const Uuid().v4();
+
+      // เรียกใช้ API
+      final result = await DiseaseAnalysisService.analyzeDiseaseRisk(
+        symptoms: symptomsText,
+        sessionId: sessionId,
+      );
+
+      // ซ่อน loading indicator
+      setState(() {
+        _isLoading = false;
+      });
+
+      // นำทางไปยังหน้าแสดงผล
+      if (!mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DiseaseResultScreen(analysis: result),
+        ),
+      );
+    } catch (e) {
+      // ซ่อน loading indicator
+      setState(() {
+        _isLoading = false;
+      });
+
+      // แสดงข้อความแจ้งเตือนเมื่อเกิดข้อผิดพลาด
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('เกิดข้อผิดพลาด: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

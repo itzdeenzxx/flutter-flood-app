@@ -22,7 +22,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		YPavcTTlZpcxID3vCGOyqUmA+AE=
+		G4+DK28/7xGmRIt/THCy0aXTEXs=
 		</data>
 		<key>flutter_assets/NativeAssetsManifest.json</key>
 		<data>
@@ -52,10 +52,6 @@
 		<data>
 		kevGXEZ2lh91bM1ZoKbWSYwqOEw=
 		</data>
-		<key>flutter_assets/assets/images/drink-water.jpg</key>
-		<data>
-		EQv6aHgqZ7fZ3wy4hu+b27moMuE=
-		</data>
 		<key>flutter_assets/assets/images/drinking_water.jpg</key>
 		<data>
 		nduxU+4BtTAfHINPBueCsjmzHyg=
@@ -72,17 +68,9 @@
 		<data>
 		Dw/XdbxODjog8ivZEIqjlC9eDm8=
 		</data>
-		<key>flutter_assets/assets/images/foot.jpg</key>
-		<data>
-		kTitMHDyC8ubadoFW/vIPO8idIU=
-		</data>
 		<key>flutter_assets/assets/images/guide-1.jpg</key>
 		<data>
 		/PT49y4WVHzp2IPQyZ5I5ac3/Tk=
-		</data>
-		<key>flutter_assets/assets/images/guide-2.jpg</key>
-		<data>
-		O5BB8dtU+BFMAPqQTD9ZHfN5NRI=
 		</data>
 		<key>flutter_assets/assets/images/noodles.jpg</key>
 		<data>
@@ -102,7 +90,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		sbLuCNo0txqFgBPA/Yq5lEX3I8c=
+		moFp8pS4ihTzyFVm9DT3ASr/4uM=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -144,7 +132,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			x9jnca7WeNtWy6NTeuyIh40TVTP99hvQTLG/IrJgMrQ=
+			4jH8PkeZs3ByD0vjkQnPTVOrF5U8XbD52QGmpFqdmkI=
 			</data>
 		</dict>
 		<key>flutter_assets/NativeAssetsManifest.json</key>
@@ -196,13 +184,6 @@
 			P1Wk34eDVvyhjO53YZxe3nziRJ4VmbVNayZO90y+PTI=
 			</data>
 		</dict>
-		<key>flutter_assets/assets/images/drink-water.jpg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			s5ZDO6OLO0g5G7qJ7bijaT6CUzckXxCXomvmNkqkEOU=
-			</data>
-		</dict>
 		<key>flutter_assets/assets/images/drinking_water.jpg</key>
 		<dict>
 			<key>hash2</key>
@@ -231,25 +212,11 @@
 			rAy7E20ge5r2fqx/wWT1+aMwarbdn/GPU4WaTi93lwM=
 			</data>
 		</dict>
-		<key>flutter_assets/assets/images/foot.jpg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			+5NJtDs5NtRKTtiPyTzJTGHlAa3ERigiSfIavJLjiN0=
-			</data>
-		</dict>
 		<key>flutter_assets/assets/images/guide-1.jpg</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			QtFl3tflfQkaoBEy/8fnqcM6q6N1YR3VsrifZUtHLpo=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/images/guide-2.jpg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			FYIGspat21tUpH1zgls5DoStttdtZWlU+hdhT6T//jo=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/noodles.jpg</key>
@@ -284,7 +251,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QGxJOHPKs/Y56aYa10Gv8I/GskCWNAq+EVNQy2dxgoc=
+			PWCWQJd2Vqer6excAIAZOOZBn1YeRlG8cNDM0JMSOls=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
