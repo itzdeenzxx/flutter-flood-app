@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // TODO: นำทางไปหน้าตั้งค่า
+              Navigator.of(context).pushNamed(AppRoutes.settings);
             },
           ),
         ],
@@ -43,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               // แถบย่อข้อมูลแจ้งเตือนระดับน้ำในพื้นที่
               _buildWaterLevelAlert(),
-              
+
               const SizedBox(height: 16),
-              
+
               // บัตรแสดงข้อมูลการเตรียมพร้อม
               DashboardCard(
                 title: 'การเตรียมพร้อม',
@@ -108,14 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // ส่วนแสดงคำแนะนำวันนี้
               _buildTodayGuides(),
-              
+
               const SizedBox(height: 24),
-              
+
               // ส่วนบัตรแสดงการตรวจสุขภาพ
               _buildHealthCheck(),
             ],
@@ -129,8 +129,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildWaterLevelAlert() {
     Color alertColor;
     String alertText;
-    
-    switch(waterLevelRisk) {
+
+    switch (waterLevelRisk) {
       case 1:
         alertColor = Colors.green;
         alertText = 'ระดับความเสี่ยงต่ำ';
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
         alertColor = Colors.green;
         alertText = 'ระดับความเสี่ยงต่ำ';
     }
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
@@ -254,15 +254,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 // child: GuideCard(
                 //   title: guide.title,
                 //   description: guide.description,
-                //   color: index == 0 
-                //       ? const Color(0xFFFF6B6B) 
-                //       : index == 1 
+                //   color: index == 0
+                //       ? const Color(0xFFFF6B6B)
+                //       : index == 1
                 //           ? const Color(0xFF4865E7)
                 //           : const Color(0xFF42B9A0),
                 //   onTap: () {
                 //     // เปิดหน้ารายละเอียดคู่มือการเอาตัวรอด
                 //     Navigator.pushNamed(
-                //       context, 
+                //       context,
                 //       AppRoutes.survivalGuide,
                 //       arguments: guide.id,
                 //     );

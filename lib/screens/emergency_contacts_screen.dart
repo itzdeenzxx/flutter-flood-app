@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flood_survival_app/models/emergency_contact.dart';
 import 'package:flood_survival_app/widgets/bottom_navigation.dart';
 
@@ -12,28 +14,25 @@ class EmergencyContactsScreen extends StatefulWidget {
 }
 
 class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
-  late List<EmergencyContact> _contacts;
   String _filterCategory = 'ทั้งหมด';
   final List<String> _categories = ['ทั้งหมด', 'หน่วยงานรัฐ', 'การแพทย์', 'ส่วนตัว'];
 
-  @override
-  void initState() {
-    super.initState();
-    // โหลดรายชื่อติดต่อจากตัวอย่าง
-    _contacts = EmergencyContact.getSampleContacts();
+  // Firestore stream to fetch contacts for the authenticated user.
+  Stream<QuerySnapshot<Map<String, dynamic>>> _contactsStream() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('emergencyContacts')
+          .snapshots();
+    } else {
+      return Stream.empty();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // กรองรายชื่อติดต่อตามหมวดหมู่
-    List<EmergencyContact> filteredContacts = _filterCategory == 'ทั้งหมด'
-        ? _contacts
-        : _contacts.where((contact) => contact.category == _filterCategory).toList();
-
-    // แยกรายการโปรดออกมา
-    List<EmergencyContact> favoriteContacts = filteredContacts.where((contact) => contact.isFavorite).toList();
-    List<EmergencyContact> otherContacts = filteredContacts.where((contact) => !contact.isFavorite).toList();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('ติดต่อฉุกเฉิน'),
@@ -48,63 +47,80 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
       ),
       body: Column(
         children: [
-          // แถบกรองหมวดหมู่
           _buildCategoryFilter(),
-          
-          // ส่วนเบอร์โทรฉุกเฉินด่วน
           _buildEmergencyCallsSection(),
-          
-          // รายการเบอร์โทรทั้งหมด
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                // แสดงรายการโปรด (ถ้ามี)
-                if (favoriteContacts.isNotEmpty) ...[
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      'รายการโปรด',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  ...favoriteContacts.map((contact) => _buildContactCard(contact)),
-                  const SizedBox(height: 16),
-                ],
-                
-                // แสดงรายการอื่นๆ
-                if (otherContacts.isNotEmpty) ...[
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      'รายชื่อติดต่อ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  ...otherContacts.map((contact) => _buildContactCard(contact)),
-                ],
-                
-                // แสดงข้อความเมื่อไม่มีรายชื่อ
-                if (filteredContacts.isEmpty) 
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(32.0),
-                      child: Text(
-                        'ไม่พบรายชื่อติดต่อในหมวดหมู่นี้',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: _contactsStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: Text('ไม่พบรายชื่อติดต่อ'));
+                }
+                final contacts = snapshot.data!.docs.map((doc) {
+                  final data = doc.data();
+                  return EmergencyContact.fromJson(data);
+                }).toList();
+
+                // Filter contacts based on category.
+                List<EmergencyContact> filteredContacts = _filterCategory == 'ทั้งหมด'
+                    ? contacts
+                    : contacts.where((contact) => contact.category == _filterCategory).toList();
+
+                // Split favorites and others.
+                List<EmergencyContact> favoriteContacts =
+                    filteredContacts.where((contact) => contact.isFavorite).toList();
+                List<EmergencyContact> otherContacts =
+                    filteredContacts.where((contact) => !contact.isFavorite).toList();
+
+                return ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    if (favoriteContacts.isNotEmpty) ...[
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          'รายการโปรด',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-              ],
+                      ...favoriteContacts.map((contact) => _buildContactCard(contact)),
+                      const SizedBox(height: 16),
+                    ],
+                    if (otherContacts.isNotEmpty) ...[
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          'รายชื่อติดต่อ',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      ...otherContacts.map((contact) => _buildContactCard(contact)),
+                    ],
+                    if (filteredContacts.isEmpty)
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: Text(
+                            'ไม่พบรายชื่อติดต่อในหมวดหมู่นี้',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
             ),
           ),
         ],
@@ -149,9 +165,7 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
               color: _filterCategory == category
                   ? Theme.of(context).primaryColor
                   : Colors.grey[800],
-              fontWeight: _filterCategory == category
-                  ? FontWeight.bold
-                  : FontWeight.normal,
+              fontWeight: _filterCategory == category ? FontWeight.bold : FontWeight.normal,
             ),
           );
         },
@@ -317,13 +331,16 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
                 contact.isFavorite ? Icons.star : Icons.star_border,
                 color: contact.isFavorite ? Colors.amber[700] : Colors.grey,
               ),
-              onPressed: () {
-                setState(() {
-                  final index = _contacts.indexWhere((c) => c.id == contact.id);
-                  _contacts[index] = _contacts[index].copyWith(
-                    isFavorite: !contact.isFavorite,
-                  );
-                });
+              onPressed: () async {
+                final user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .collection('emergencyContacts')
+                      .doc(contact.id)
+                      .update({'isFavorite': !contact.isFavorite});
+                }
               },
             ),
           ],
@@ -337,7 +354,6 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
     if (await url_launcher.canLaunchUrl(phoneUri)) {
       await url_launcher.launchUrl(phoneUri);
     } else {
-      // แสดงข้อความเมื่อไม่สามารถโทรได้
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -417,33 +433,32 @@ class _EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
             child: const Text('ยกเลิก'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (nameController.text.trim().isNotEmpty &&
                   phoneController.text.trim().isNotEmpty) {
-                // เพิ่มรายชื่อใหม่
-                setState(() {
-                  _contacts.add(
-                    EmergencyContact(
-                      id: DateTime.now().millisecondsSinceEpoch.toString(),
-                      name: nameController.text.trim(),
-                      phoneNumber: phoneController.text.trim(),
-                      category: selectedCategory,
-                      notes: notesController.text.trim().isNotEmpty
-                          ? notesController.text.trim()
-                          : null,
-                    ),
-                  );
-                });
-                Navigator.pop(context);
-                
-                // แสดงข้อความยืนยัน
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('เพิ่มรายชื่อติดต่อสำเร็จ'),
-                  ),
+                final newContact = EmergencyContact(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  name: nameController.text.trim(),
+                  phoneNumber: phoneController.text.trim(),
+                  category: selectedCategory,
+                  notes: notesController.text.trim().isNotEmpty
+                      ? notesController.text.trim()
+                      : null,
                 );
+                final user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .collection('emergencyContacts')
+                      .doc(newContact.id)
+                      .set(newContact.toJson());
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('เพิ่มรายชื่อติดต่อสำเร็จ')),
+                  );
+                }
               } else {
-                // แสดงข้อความเตือนเมื่อข้อมูลไม่ครบ
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('กรุณากรอกชื่อและเบอร์โทรศัพท์'),

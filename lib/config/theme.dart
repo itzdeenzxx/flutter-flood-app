@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dark_theme_colors.dart';
 
 class AppTheme {
-  // สีหลักของแอพ
+  // Light Theme colors (unchanged)
   static const Color primaryColor = Color(0xFF4865E7);
   static const Color secondaryColor = Color(0xFFFF6B6B);
   static const Color tertiaryColor = Color(0xFF42B9A0);
@@ -10,7 +11,7 @@ class AppTheme {
   static const Color textColor = Color(0xFF1E293B);
   static const Color lightTextColor = Color(0xFF64748B);
 
-  // ธีมหลัก (Light Theme)
+  // Light Theme
   static final ThemeData lightTheme = ThemeData(
     primaryColor: primaryColor,
     scaffoldBackgroundColor: backgroundColor,
@@ -70,36 +71,39 @@ class AppTheme {
     ),
   );
 
-  // ธีมโหมดมืด (Dark Theme)
+  // Dark Theme using colors from DarkThemeColors with improved contrast
   static final ThemeData darkTheme = ThemeData(
-    primaryColor: primaryColor,
-    scaffoldBackgroundColor: const Color(0xFF121826),
+    brightness: Brightness.dark,
+    primaryColor: DarkThemeColors.primary,
+    scaffoldBackgroundColor: DarkThemeColors.background,
     fontFamily: 'Prompt',
     colorScheme: ColorScheme.dark(
-      primary: primaryColor,
-      secondary: secondaryColor,
-      tertiary: tertiaryColor,
-      background: const Color(0xFF121826),
-      surface: const Color(0xFF1E293B),
+      primary: DarkThemeColors.primary,
+      secondary: DarkThemeColors.secondary,
+      tertiary: DarkThemeColors.tertiary,
+      background: DarkThemeColors.background,
+      surface: DarkThemeColors.card,
+      onBackground: Colors.white,
+      onSurface: Colors.white,
     ),
     cardTheme: CardTheme(
-      color: const Color(0xFF1E293B),
+      color: DarkThemeColors.card,
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
     ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF121826),
+    appBarTheme: AppBarTheme(
+      backgroundColor: DarkThemeColors.background,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         color: Colors.white,
         fontSize: 20,
         fontWeight: FontWeight.bold,
         fontFamily: 'Prompt',
       ),
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
     ),
     textTheme: const TextTheme(
       displayLarge: TextStyle(
@@ -128,6 +132,11 @@ class AppTheme {
       ),
       bodyLarge: TextStyle(color: Colors.white),
       bodyMedium: TextStyle(color: Colors.white),
+      labelLarge: TextStyle(color: Colors.white70),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      hintStyle: TextStyle(color: Colors.white70),
+      labelStyle: TextStyle(color: Colors.white70),
     ),
   );
 }

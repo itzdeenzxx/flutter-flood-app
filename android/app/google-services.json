@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836679537624",
+    "project_id": "floodsurvival-bb358",
+    "storage_bucket": "floodsurvival-bb358.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836679537624:android:45ac54b87b5dfad7d8d8ad",
+        "android_client_info": {
+          "package_name": "com.example.flood_survival_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv3iOC7ZnUwb41SsWqfyfkpl7Z3h1kaUo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

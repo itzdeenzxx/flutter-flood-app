@@ -41,7 +41,6 @@ class EmergencyContact {
     };
   }
 
-  // คัดลอกออบเจกต์พร้อมปรับปรุงคุณสมบัติ
   EmergencyContact copyWith({
     String? id,
     String? name,
@@ -62,7 +61,7 @@ class EmergencyContact {
     );
   }
 
-  // สร้างข้อมูลตัวอย่าง
+  // For testing purposes only. In production, you'll fetch from Firestore.
   static List<EmergencyContact> getSampleContacts() {
     return [
       EmergencyContact(
