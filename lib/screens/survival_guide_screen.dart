@@ -9,11 +9,12 @@ class SurvivalGuideScreen extends StatefulWidget {
   State<SurvivalGuideScreen> createState() => _SurvivalGuideScreenState();
 }
 
-class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTickerProviderStateMixin {
+class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List<SurvivalGuide> guides = SurvivalGuide.getSampleGuides();
   String _selectedCategory = 'ทั้งหมด';
-  
+
   final List<String> categories = [
     'ทั้งหมด',
     'ก่อนน้ำท่วม',
@@ -70,12 +71,13 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
             itemCount: guides.length,
             itemBuilder: (context, index) {
               final guide = guides[index];
-              
+
               // กรองตามหมวดหมู่ที่เลือก
-              if (_selectedCategory != 'ทั้งหมด' && guide.category != _selectedCategory) {
+              if (_selectedCategory != 'ทั้งหมด' &&
+                  guide.category != _selectedCategory) {
                 return const SizedBox.shrink();
               }
-              
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
                 shape: RoundedRectangleBorder(
@@ -96,7 +98,8 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: _getCategoryColor(guide.category).withOpacity(0.1),
+                                color: _getCategoryColor(guide.category)
+                                    .withOpacity(0.1),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -195,7 +198,7 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = category == _selectedCategory;
-          
+
           return Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: FilterChip(
@@ -210,12 +213,8 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
               selectedColor: const Color(0xFF4865E7).withOpacity(0.1),
               checkmarkColor: const Color(0xFF4865E7),
               labelStyle: TextStyle(
-                color: isSelected 
-                    ? const Color(0xFF4865E7) 
-                    : Colors.grey[800],
-                fontWeight: isSelected 
-                    ? FontWeight.bold 
-                    : FontWeight.normal,
+                color: isSelected ? const Color(0xFF4865E7) : Colors.grey[800],
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           );
@@ -225,23 +224,9 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
   }
 
   Widget _buildChecklistTab() {
-    // ตัวอย่างรายการเช็คลิสต์สิ่งของสำหรับเตรียมพร้อมรับมือน้ำท่วม
-    final checklistItems = [
-      {'name': 'ถุงยังชีพ', 'isChecked': true},
-      {'name': 'น้ำดื่มสะอาด (3 ลิตรต่อคนต่อวัน)', 'isChecked': true},
-      {'name': 'อาหารแห้งสำรอง (3-7 วัน)', 'isChecked': false},
-      {'name': 'ยาและเวชภัณฑ์', 'isChecked': false},
-      {'name': 'ไฟฉายและแบตเตอรี่สำรอง', 'isChecked': true},
-      {'name': 'วิทยุแบบใช้ถ่าน', 'isChecked': false},
-      {'name': 'แบตเตอรี่สำรอง/พาวเวอร์แบงค์', 'isChecked': true},
-      {'name': 'เอกสารสำคัญใส่ซองกันน้ำ', 'isChecked': false},
-      {'name': 'เงินสดสำรอง', 'isChecked': true},
-      {'name': 'เสื้อผ้าและของใช้ส่วนตัว', 'isChecked': false},
-      {'name': 'อุปกรณ์ทำความสะอาด', 'isChecked': false},
-      {'name': 'ถุงขยะขนาดใหญ่', 'isChecked': false},
-      {'name': 'นกหวีด (ส่งสัญญาณขอความช่วยเหลือ)', 'isChecked': false},
-      {'name': 'เชือกและเทปกาว', 'isChecked': false},
-    ];
+    // รายการเช็คลิสต์สิ่งของสำหรับเตรียมพร้อมรับมือน้ำท่วม
+    final checklistItems = _checklistItems;
+    final TextEditingController _newItemController = TextEditingController();
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -271,8 +256,10 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
                 ),
                 const SizedBox(height: 16),
                 LinearProgressIndicator(
-                  value: checklistItems.where((item) => item['isChecked'] as bool).length / 
-                         checklistItems.length,
+                  value: checklistItems
+                          .where((item) => item['isChecked'] as bool)
+                          .length /
+                      checklistItems.length,
                   backgroundColor: Colors.grey[200],
                   color: const Color(0xFF4865E7),
                 ),
@@ -284,33 +271,106 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
                     fontSize: 12,
                   ),
                 ),
-                const Divider(height: 32),
+
+                // เพิ่มส่วนการป้อนรายการใหม่
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _newItemController,
+                          decoration: const InputDecoration(
+                            hintText: 'เพิ่มรายการใหม่',
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_newItemController.text.trim().isNotEmpty) {
+                            setState(() {
+                              _checklistItems.add({
+                                'name': _newItemController.text.trim(),
+                                'isChecked': false,
+                              });
+                              _newItemController.clear();
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF4865E7),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: const Text('เพิ่ม'),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const Divider(height: 16),
+
+                // รายการเช็คลิสต์
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: checklistItems.length,
                   itemBuilder: (context, index) {
                     final item = checklistItems[index];
-                    return CheckboxListTile(
-                      title: Text(
-                        item['name'] as String,
-                        style: TextStyle(
-                          decoration: item['isChecked'] as bool 
-                              ? TextDecoration.lineThrough 
-                              : null,
-                          color: item['isChecked'] as bool 
-                              ? Colors.grey[500] 
-                              : Colors.black,
+                    return Dismissible(
+                      key: Key(item['name'] as String),
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 16),
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
                         ),
                       ),
-                      value: item['isChecked'] as bool,
-                      activeColor: const Color(0xFF4865E7),
-                      onChanged: (newValue) {
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
                         setState(() {
-                          item['isChecked'] = newValue!;
+                          _checklistItems.removeAt(index);
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('ลบ "${item['name']}" แล้ว'),
+                            action: SnackBarAction(
+                              label: 'เลิกทำ',
+                              onPressed: () {
+                                setState(() {
+                                  _checklistItems.insert(index, item);
+                                });
+                              },
+                            ),
+                          ),
+                        );
                       },
-                      controlAffinity: ListTileControlAffinity.leading,
+                      child: CheckboxListTile(
+                        title: Text(
+                          item['name'] as String,
+                          style: TextStyle(
+                            decoration: item['isChecked'] as bool
+                                ? TextDecoration.lineThrough
+                                : null,
+                            color: item['isChecked'] as bool
+                                ? Colors.grey[500]
+                                : Colors.black,
+                          ),
+                        ),
+                        value: item['isChecked'] as bool,
+                        activeColor: const Color(0xFF4865E7),
+                        onChanged: (newValue) {
+                          setState(() {
+                            item['isChecked'] = newValue!;
+                          });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
                     );
                   },
                 ),
@@ -321,6 +381,24 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
       ],
     );
   }
+
+// เพิ่มตัวแปรที่เก็บรายการเช็คลิสต์ที่ class level
+  List<Map<String, dynamic>> _checklistItems = [
+    {'name': 'ถุงยังชีพ', 'isChecked': true},
+    {'name': 'น้ำดื่มสะอาด (3 ลิตรต่อคนต่อวัน)', 'isChecked': true},
+    {'name': 'อาหารแห้งสำรอง (3-7 วัน)', 'isChecked': false},
+    {'name': 'ยาและเวชภัณฑ์', 'isChecked': false},
+    {'name': 'ไฟฉายและแบตเตอรี่สำรอง', 'isChecked': true},
+    {'name': 'วิทยุแบบใช้ถ่าน', 'isChecked': false},
+    {'name': 'แบตเตอรี่สำรอง/พาวเวอร์แบงค์', 'isChecked': true},
+    {'name': 'เอกสารสำคัญใส่ซองกันน้ำ', 'isChecked': false},
+    {'name': 'เงินสดสำรอง', 'isChecked': true},
+    {'name': 'เสื้อผ้าและของใช้ส่วนตัว', 'isChecked': false},
+    {'name': 'อุปกรณ์ทำความสะอาด', 'isChecked': false},
+    {'name': 'ถุงขยะขนาดใหญ่', 'isChecked': false},
+    {'name': 'นกหวีด (ส่งสัญญาณขอความช่วยเหลือ)', 'isChecked': false},
+    {'name': 'เชือกและเทปกาว', 'isChecked': false},
+  ];
 
   void _showGuideDetails(SurvivalGuide guide) {
     showModalBottomSheet(
@@ -356,7 +434,8 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: _getCategoryColor(guide.category).withOpacity(0.1),
+                        color:
+                            _getCategoryColor(guide.category).withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -553,7 +632,7 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen> with SingleTi
         return Icons.favorite;
       case 'การเคลื่อนย้าย':
         return Icons.directions_walk;
-        
+
       case 'อาหารและน้ำ':
         return Icons.local_dining;
       default:

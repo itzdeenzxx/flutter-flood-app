@@ -94,13 +94,13 @@ class SurvivalGuide {
           SurvivalStep(
             title: 'ตรวจสอบสภาพบ้าน',
             description: 'เช่น หลังคา, ผนัง, ประตู',
-            imageUrl: 'assets/images/guide-1.jpg',
+            imageUrl: 'assets/images/home.png',
           ),
           SurvivalStep(
             title: 'ตรวจสอบระบบระบายน้ำ',
             description:
                 'ตรวจสอบและทำความสะอาดท่อระบายน้ำเพื่อป้องกันการอุดตันที่อาจทำให้น้ำท่วมบ้านได้',
-            imageUrl: 'assets/images/Flooding.jpg',
+            imageUrl: 'assets/images/pipe.png',
           ),
         ],
       ),
@@ -117,13 +117,13 @@ class SurvivalGuide {
             title: 'กระสอบทราย',
             description:
                 'ใช้กระสอบทรายกั้นบริเวณทางเข้าบ้านเพื่อป้องกันน้ำท่วม',
-            imageUrl: 'assets/images/guide-2.jpg',
+            imageUrl: 'assets/images/sandbag.png',
           ),
           SurvivalStep(
             title: 'แผ่นกันน้ำ',
             description:
                 'ใช้แผ่นพลาสติกหนาหรือวัสดุกันน้ำมาติดตั้งที่ประตูและหน้าต่าง',
-            imageUrl: 'assets/images/guide-3.jpg',
+            imageUrl: 'assets/images/L.png',
           ),
         ],
       ),
@@ -149,7 +149,7 @@ class SurvivalGuide {
             title: 'ติดต่อขอความช่วยเหลือเมื่อจำเป็น',
             description:
                 'ติดต่อหน่วยกู้ภัย หมายเลขฉุกเฉิน 1669 (สายด่วนกู้ชีพ) หรือ 191 (ตำรวจ)',
-            imageUrl: 'assets/images/snake.jpg',
+            imageUrl: 'assets/images/Rescue_unit.jpg',
           ),
         ],
       ),
@@ -171,7 +171,7 @@ class SurvivalGuide {
               3. หากจำเป็นต้องข้ามน้ำ ให้ใช้เส้นทางที่มั่นคงและ
                   พยายามยึดสิ่งที่มั่นคงเพื่อไม่ให้ลื่นหรือถูกพัดพา
               ''',
-            imageUrl: 'assets/images/flowing-water.jpg',
+            imageUrl: 'assets/images/water_flow.png',
           ),
           SurvivalStep(
             title: 'ระวังน้ำลึกที่มีความเสี่ยง',
@@ -183,7 +183,7 @@ class SurvivalGuide {
               3. หากคุณไม่สามารถหลีกเลี่ยงการเดินผ่านน้ำได้ 
                   ให้เดินอย่างระมัดระวัง และหาทางออกที่ปลอดภัย
               ''',
-            imageUrl: 'assets/images/deep-water.jpg',
+            imageUrl: 'assets/images/walk.png',
           ),
         ],
       ),
@@ -199,13 +199,13 @@ class SurvivalGuide {
             title: 'หลีกเลี่ยงการขับรถในน้ำท่วม',
             description:
                 'การขับรถผ่านน้ำท่วมอาจทำให้รถจม หรือทำให้เกิดอุบัติเหตุได้เนื่องจากกระแสน้ำที่แรง  หากน้ำท่วมสูงเกินกว่าระดับที่ปลอดภัย ควรหยุดรถและหาที่หลบภัยในพื้นที่สูงแทนที่จะขับต่อ',
-            imageUrl: 'assets/images/avoid-driving.jpg',
+            imageUrl: 'assets/images/car_flow.png',
           ),
           SurvivalStep(
             title: 'ใช้ยานพาหนะที่เหมาะสม',
             description:
                 'หากจำเป็นต้องเดินทางในพื้นที่ที่น้ำท่วม ควรใช้ยานพาหนะที่สามารถผ่านน้ำท่วมได้ เช่น เรือหรือยานพาหนะที่มีล้อสูงการใช้รถยนต์ที่มีความสูงจากพื้นจะช่วยลดความเสี่ยงจากการจมน้ำ',
-            imageUrl: 'assets/images/high-clearance-vehicle.jpg',
+            imageUrl: 'assets/images/boat.png',
           ),
         ],
       ),
@@ -234,7 +234,7 @@ class SurvivalGuide {
               - ห้ามใช้ไฟฟ้าในพื้นที่ที่มีน้ำขัง  
               - ห้ามเข้าไปในพื้นที่ที่มีโครงสร้างอาคารเสียหายร้ายแรง  
             ''',
-            imageUrl: 'assets/images/flood-recovery.jpg',
+            imageUrl: 'assets/images/cleaning.jpg',
           ),
           SurvivalStep(
             title: 'ฟื้นฟูต้นไม้และพืชผักสวนครัว',
@@ -251,7 +251,7 @@ class SurvivalGuide {
               - ห้ามใส่ปุ๋ยที่มีสารเคมีแรงในทันที เพราะอาจทำให้พืช
                  ได้รับอันตรายจากการรากพืชแช่น้ำ  
             ''',
-            imageUrl: 'assets/images/plant-recovery.jpg',
+            imageUrl: 'assets/images/trees.jpg',
           ),
         ],
       ),
@@ -279,7 +279,7 @@ class SurvivalGuide {
               - ห้ามสัมผัสอุปกรณ์ไฟฟ้าที่เปียก  
               - ห้ามเปิดหรือปิดเครื่องใช้ไฟฟ้าในขณะที่มือหรือพื้นเปียก  
             ''',
-            imageUrl: 'assets/images/electrical-safety.jpg',
+            imageUrl: 'assets/images/electric_current.jpg',
           ),
           SurvivalStep(
             title: 'ตรวจสอบอันตรายจากโครงสร้าง',
@@ -299,7 +299,7 @@ class SurvivalGuide {
               - ห้ามใช้สิ่งของหนักในการทดสอบโครงสร้าง 
                  เพราะอาจทำให้เกิดความเสียหายเพิ่ม  
             ''',
-            imageUrl: 'assets/images/structure-safety.jpg',
+            imageUrl: 'assets/images/danger.jpg',
           )
         ],
       ),
@@ -328,7 +328,7 @@ class SurvivalGuide {
               - ห้ามเข้าไปในพื้นที่ที่มีความเสี่ยงสูง เช่น 
                  อาคารที่ได้รับความเสียหายหนัก  
             ''',
-            imageUrl: 'assets/images/damage-assessment.jpg',
+            imageUrl: 'assets/images/house.jpg',
           ),
           SurvivalStep(
             title: 'ติดต่อหน่วยงานที่เกี่ยวข้อง',
@@ -349,7 +349,7 @@ class SurvivalGuide {
               - ห้ามรอให้ความช่วยเหลือมาถึง หากมีความเสี่ยงที่
                  อาจจะทำให้สถานการณ์รุนแรงขึ้น  
             ''',
-            imageUrl: 'assets/images/contact-agencies.jpg',
+            imageUrl: 'assets/images/police.jpg',
           )
         ],
       ),
@@ -372,7 +372,7 @@ class SurvivalGuide {
               4. สังเกตอาการแผล หากแผลบวม แดง หรือมีหนอง
                   ควรพบแพทย์ทันที
               ''',
-            imageUrl: 'assets/images/foot-wound.jpg',
+            imageUrl: 'assets/images/foot-wound.png',
           ),
           SurvivalStep(
             title: 'แผลเลือดออก',
@@ -388,7 +388,7 @@ class SurvivalGuide {
               - ห้ามใช้สิ่งของสกปรกหรือไม่สะอาดในการกดแผล  
               - ห้ามกดแผลอย่างรุนแรงเกินไป 
             ''',
-            imageUrl: 'assets/images/cut-wound.jpg',
+            imageUrl: 'assets/images/cut-wound.png',
           ),
           SurvivalStep(
             title: 'เป็นลม หมดสติ',
@@ -403,7 +403,7 @@ class SurvivalGuide {
               - ห้ามให้ผู้ป่วยดื่มน้ำหรืออาหารทันทีหลังจากฟื้น  
               - ห้ามทำ CPR หากผู้ป่วยหายใจได้
             ''',
-            imageUrl: 'assets/images/unconscious.jpg',
+            imageUrl: 'assets/images/unconscious.png',
           ),
         ],
       ),
@@ -423,7 +423,7 @@ class SurvivalGuide {
                   3. ถ้ามีหลายคน ให้คนอื่นโทรหาหน่วยกู้ภัย
                       หรือแจ้งเจ้าหน้าที่ทันที
                   ''',
-            imageUrl: 'assets/images/drowning-1.jpg',
+            imageUrl: 'assets/images/drowning.png',
           ),
           SurvivalStep(
             title: 'เริ่มทำ CPR',
@@ -437,7 +437,7 @@ class SurvivalGuide {
                   4. หากผู้ป่วยยังไม่หายใจหรือหมดสติ ให้ดำเนินการ
                       CPR ต่อไปจนกว่าจะมีความช่วยเหลือ
                   ''',
-            imageUrl: 'assets/images/cpr.jpg',
+            imageUrl: 'assets/images/CPR.png',
           ),
           SurvivalStep(
             title: 'ตรวจสอบการตอบสนอง',
@@ -449,7 +449,7 @@ class SurvivalGuide {
                   3. รีบพาผู้ป่วยไปโรงพยาบาล หรือให้หน่วย
                       กู้ภัยเข้ามาช่วยทันที
                   ''',
-            imageUrl: 'assets/images/first-aid.jpg',
+            imageUrl: 'assets/images/hospital.png',
           ),
         ],
       ),
@@ -476,7 +476,7 @@ class SurvivalGuide {
               - ห้ามใช้มีดกรีดแผล  
               - ห้ามใช้แอลกอฮอล์หรือยาสมุนไพรทาแผล    
               ''',
-            imageUrl: 'assets/images/snake-bite.jpg',
+            imageUrl: 'assets/images/snake2.jpg',
           ),
           SurvivalStep(
             title: 'ถูกแมงป่องต่อย',
@@ -493,7 +493,7 @@ class SurvivalGuide {
               - ห้ามใช้แอลกอฮอล์หรือสารเคมีทาบริเวณแผล  
               - ห้ามใช้ปากดูดพิษ  
             ''',
-            imageUrl: 'assets/images/scorpion-sting.jpg',
+            imageUrl: 'assets/images/scorpion.jpg',
           ),
           SurvivalStep(
             title: 'ถูกตะขาบกัด',
@@ -511,7 +511,7 @@ class SurvivalGuide {
               - ห้ามใช้แอลกอฮอล์ล้างแผล  
               - ห้ามใช้ปากดูดพิษ  
             ''',
-            imageUrl: 'assets/images/centipede-bite.jpg',
+            imageUrl: 'assets/images/centipede.jpg',
           ),
         ],
       ),
@@ -555,7 +555,7 @@ class SurvivalGuide {
             title: 'น้ำดื่มสะอาด',
             description:
                 'น้ำดื่มที่บรรจุในขวดพลาสติกหรือขวดแก้วที่สะอาดและปิดฝาสนิท ไม่ชำรุดหรือมีรอยรั่ว',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/drinking_water.png',
           ),
         ],
       ),
@@ -572,18 +572,18 @@ class SurvivalGuide {
           SurvivalStep(
             title: 'ตรวจสอบระดับน้ำ และทิศทางการไหลของน้ำ',
             description: 'ตรวจสอบระดับน้ำในพื้นที่ที่อยู่ใกล้เคียง และติดตามทิศทางการไหลของน้ำเพื่อเตรียมความพร้อมในการเคลื่อนย้ายหรือหลีกเลี่ยงพื้นที่ที่มีความเสี่ยง',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/water_levels.png',
           ),
           SurvivalStep(
             title: 'ฟังประกาศจากทางการหรือหน่วยงานช่วยเหลือ',
             description: 'ฟังการประกาศหรือคำแนะนำจากทางการหรือหน่วยงานช่วยเหลือ เช่น การอพยพหรือการแจ้งเตือนสถานการณ์ เพื่อปฏิบัติตามอย่างถูกต้อง',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/deep_water.png',
           ),
           SurvivalStep(
             title:
                 'หลีกเลี่ยงการเคลื่อนย้ายในช่วงกลางคืนหรือในพื้นที่ที่มีน้ำไหลแรง',
             description: 'หลีกเลี่ยงการเดินทางหรือเคลื่อนย้ายในเวลากลางคืนหรือในพื้นที่ที่มีน้ำไหลแรง เพื่อความปลอดภัยจากอุบัติเหตุหรืออันตราย',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/night.png',
           ),
         ],
       ),
@@ -600,22 +600,22 @@ class SurvivalGuide {
           SurvivalStep(
             title: 'น้ำดื่มสะอาดและอาหารแห้ง',
             description: 'จัดเตรียมน้ำดื่มสะอาดและอาหารแห้ง เก็บไว้ในที่ที่สามารถเข้าถึงได้ง่าย',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/food_water.png',
           ),
           SurvivalStep(
             title: 'โทรศัพท์มือถือพร้อมแบตสำรอง',
             description: 'เตรียมโทรศัพท์มือถือและแบตสำรอง เพื่อให้สามารถติดต่อสื่อสารได้ในกรณีเกิดเหตุการณ์ฉุกเฉิน',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/powerbank.png',
           ),
           SurvivalStep(
             title: 'ยาประจำตัว',
             description: 'จัดเตรียมยาประจำตัวหรือยาที่จำเป็นต่อการรักษาสุขภาพ เช่น ยาลดไข้ ยาลดความดัน หรือยาสำหรับโรคประจำตัว',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/drug.png',
           ),
           SurvivalStep(
             title: 'เอกสารสำคัญ (ใส่ถุงกันน้ำ)',
             description: 'รวบรวมเอกสารสำคัญ เช่น บัตรประชาชน ทะเบียนบ้าน และเอกสารทางการเงิน แล้วใส่ในถุงกันน้ำเพื่อป้องกันความเสียหายจากน้ำท่วม',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/document.png',
           ),
         ],
       ),
@@ -631,26 +631,19 @@ class SurvivalGuide {
           SurvivalStep(
             title: 'ใช้เส้นทางที่มีการกำหนดหรือแนะนำจากเจ้าหน้าที่',
             description: 'เพื่อความปลอดภัยในการเคลื่อนย้ายในช่วงน้ำท่วม',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/safe_routes.png',
           ),
           SurvivalStep(
             title: 'หลีกเลี่ยงถนนที่น้ำท่วมสูง หรือน้ำไหลแรง',
             description:
                 'เพราะอาจเสี่ยงต่อการเกิดอุบัติเหตุและอันตรายจากสภาพแวดล้อมที่ไม่ปลอดภัย',
-            imageUrl: 'assets/images/drinking_water.jpg',
-          ),
-          SurvivalStep(
-            title:
-                'หากต้องเดินลุยน้ำ ให้ใช้ไม้หรือวัตถุยาวเพื่อสำรวจเส้นทางก่อน',
-            description:
-                'เพื่อหลีกเลี่ยงอันตรายจากสิ่งกีดขวางหรือหลุมลึกที่อาจมองไม่เห็น',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/high_water.png',
           ),
           SurvivalStep(
             title: 'ระวังกระแสไฟฟ้ารั่ว',
             description:
                 'หลีกเลี่ยงบริเวณที่มีสายไฟขาดหรือเสี่ยงต่อกระแสไฟฟ้ารั่ว และห้ามจับเสาไฟฟ้า หรืออุปกรณ์ไฟฟ้าที่แช่อยู่ในน้ำ',
-            imageUrl: 'assets/images/drinking_water.jpg',
+            imageUrl: 'assets/images/electricity2.png',
           ),
         ],
       ),
