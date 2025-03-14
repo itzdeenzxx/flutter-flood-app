@@ -1,6 +1,9 @@
+// Import statements at the top of survival_guide_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flood_survival_app/models/survival_guide.dart';
 import 'package:flood_survival_app/widgets/bottom_navigation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SurvivalGuideScreen extends StatefulWidget {
   const SurvivalGuideScreen({Key? key}) : super(key: key);
@@ -14,6 +17,21 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
   late TabController _tabController;
   final List<SurvivalGuide> guides = SurvivalGuide.getSampleGuides();
   String _selectedCategory = 'ทั้งหมด';
+  bool _isLoading = true;
+
+  // Default checklist items
+  List<Map<String, dynamic>> _checklistItems = [
+    {'name': 'น้ำดื่มสะอาด (3 ลิตรต่อคนต่อวัน)', 'isChecked': false},
+    {'name': 'อาหารสำเร็จรูป/อาหารกระป๋อง', 'isChecked': false},
+    {'name': 'ไฟฉาย และ แบตเตอรี่สำรอง', 'isChecked': false},
+    {'name': 'วิทยุแบบใช้ถ่าน', 'isChecked': false},
+    {'name': 'ยาและเวชภัณฑ์', 'isChecked': false},
+    {'name': 'เอกสารสำคัญในถุงกันน้ำ', 'isChecked': false},
+    {'name': 'เสื้อผ้าที่จำเป็น', 'isChecked': false},
+    {'name': 'ของใช้ส่วนตัว', 'isChecked': false},
+    {'name': 'อุปกรณ์ทำความสะอาด', 'isChecked': false},
+    {'name': 'เงินสดฉุกเฉิน', 'isChecked': false},
+  ];
 
   final List<String> categories = [
     'ทั้งหมด',
@@ -29,6 +47,7 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _loadChecklistFromFirestore();
   }
 
   @override
@@ -54,7 +73,9 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
         controller: _tabController,
         children: [
           _buildGuidesTab(),
-          _buildChecklistTab(),
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildChecklistTab(),
         ],
       ),
       bottomNavigationBar: const AppBottomNavigation(currentIndex: 1),
@@ -224,8 +245,6 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
   }
 
   Widget _buildChecklistTab() {
-    // รายการเช็คลิสต์สิ่งของสำหรับเตรียมพร้อมรับมือน้ำท่วม
-    final checklistItems = _checklistItems;
     final TextEditingController _newItemController = TextEditingController();
 
     return ListView(
@@ -256,16 +275,18 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                 ),
                 const SizedBox(height: 16),
                 LinearProgressIndicator(
-                  value: checklistItems
-                          .where((item) => item['isChecked'] as bool)
-                          .length /
-                      checklistItems.length,
+                  value: _checklistItems.isEmpty
+                      ? 0
+                      : _checklistItems
+                              .where((item) => item['isChecked'] as bool)
+                              .length /
+                          _checklistItems.length,
                   backgroundColor: Colors.grey[200],
                   color: const Color(0xFF4865E7),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'ความคืบหน้า: ${checklistItems.where((item) => item['isChecked'] as bool).length}/${checklistItems.length}',
+                  'ความคืบหน้า: ${_checklistItems.where((item) => item['isChecked'] as bool).length}/${_checklistItems.length}',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 12,
@@ -293,11 +314,15 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                         onPressed: () {
                           if (_newItemController.text.trim().isNotEmpty) {
                             setState(() {
-                              _checklistItems.add({
+                              Map<String, dynamic> newItem = {
                                 'name': _newItemController.text.trim(),
                                 'isChecked': false,
-                              });
+                              };
+                              _checklistItems.add(newItem);
                               _newItemController.clear();
+                              
+                              // Save the new item to Firestore
+                              _saveChecklistToFirestore();
                             });
                           }
                         },
@@ -317,11 +342,11 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: checklistItems.length,
+                  itemCount: _checklistItems.length,
                   itemBuilder: (context, index) {
-                    final item = checklistItems[index];
+                    final item = _checklistItems[index];
                     return Dismissible(
-                      key: Key(item['name'] as String),
+                      key: Key("${item['name']}_$index"),
                       background: Container(
                         color: Colors.red,
                         alignment: Alignment.centerRight,
@@ -335,6 +360,8 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                       onDismissed: (direction) {
                         setState(() {
                           _checklistItems.removeAt(index);
+                          // Update Firestore after removing item
+                          _saveChecklistToFirestore();
                         });
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -344,6 +371,8 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                               onPressed: () {
                                 setState(() {
                                   _checklistItems.insert(index, item);
+                                  // Update Firestore after undoing delete
+                                  _saveChecklistToFirestore();
                                 });
                               },
                             ),
@@ -367,6 +396,8 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                         onChanged: (newValue) {
                           setState(() {
                             item['isChecked'] = newValue!;
+                            // Save to Firestore when checkbox state changes
+                            _saveChecklistToFirestore();
                           });
                         },
                         controlAffinity: ListTileControlAffinity.leading,
@@ -381,24 +412,80 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
       ],
     );
   }
+  // Method to save checklist to Firestore
+  Future<void> _saveChecklistToFirestore() async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .set({
+          'checklist': _checklistItems,
+          'lastUpdated': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+        
+        // Calculate the preparedness percentage for the home screen
+        int completedItems = _checklistItems.where((item) => item['isChecked'] as bool).length;
+        int totalItems = _checklistItems.length;
+        int preparednessPercentage = totalItems > 0 ? ((completedItems / totalItems) * 100).floor() : 0;
+        
+        // Update the user's preparedness percentage in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .set({
+          'preparednessPercentage': preparednessPercentage,
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      print('Error saving checklist: $e');
+    }
+  }
 
-// เพิ่มตัวแปรที่เก็บรายการเช็คลิสต์ที่ class level
-  List<Map<String, dynamic>> _checklistItems = [
-    {'name': 'ถุงยังชีพ', 'isChecked': true},
-    {'name': 'น้ำดื่มสะอาด (3 ลิตรต่อคนต่อวัน)', 'isChecked': true},
-    {'name': 'อาหารแห้งสำรอง (3-7 วัน)', 'isChecked': false},
-    {'name': 'ยาและเวชภัณฑ์', 'isChecked': false},
-    {'name': 'ไฟฉายและแบตเตอรี่สำรอง', 'isChecked': true},
-    {'name': 'วิทยุแบบใช้ถ่าน', 'isChecked': false},
-    {'name': 'แบตเตอรี่สำรอง/พาวเวอร์แบงค์', 'isChecked': true},
-    {'name': 'เอกสารสำคัญใส่ซองกันน้ำ', 'isChecked': false},
-    {'name': 'เงินสดสำรอง', 'isChecked': true},
-    {'name': 'เสื้อผ้าและของใช้ส่วนตัว', 'isChecked': false},
-    {'name': 'อุปกรณ์ทำความสะอาด', 'isChecked': false},
-    {'name': 'ถุงขยะขนาดใหญ่', 'isChecked': false},
-    {'name': 'นกหวีด (ส่งสัญญาณขอความช่วยเหลือ)', 'isChecked': false},
-    {'name': 'เชือกและเทปกาว', 'isChecked': false},
-  ];
+  // Method to load checklist from Firestore
+  Future<void> _loadChecklistFromFirestore() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+        
+        if (doc.exists && doc.data() != null) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          if (data.containsKey('checklist')) {
+            List<dynamic> checklistData = data['checklist'];
+            setState(() {
+              _checklistItems = checklistData.map((item) => 
+                Map<String, dynamic>.from(item as Map<String, dynamic>)
+              ).toList();
+            });
+          } else {
+            // If user doesn't have a checklist yet, save the default one
+            _saveChecklistToFirestore();
+          }
+        } else {
+          // If user document doesn't exist, save the default checklist
+          _saveChecklistToFirestore();
+        }
+      }
+      
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error loading checklist: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   void _showGuideDetails(SurvivalGuide guide) {
     showModalBottomSheet(
@@ -632,7 +719,6 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
         return Icons.favorite;
       case 'การเคลื่อนย้าย':
         return Icons.directions_walk;
-
       case 'อาหารและน้ำ':
         return Icons.local_dining;
       default:

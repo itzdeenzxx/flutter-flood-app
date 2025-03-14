@@ -5,6 +5,7 @@ import 'package:flood_survival_app/screens/auth/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flood_survival_app/providers/theme_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -19,7 +20,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _selectedLanguage = 'ไทย';
   final List<String> _languages = ['ไทย', 'English'];
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -28,22 +30,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _initializeNotifications();
   }
 
-Future<void> _initializeNotifications() async {
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  final DarwinInitializationSettings initializationSettingsIOS =
-      DarwinInitializationSettings(
-        requestAlertPermission: true,
-        requestBadgePermission: true,
-        requestSoundPermission: true,
-      );
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsIOS,
-  );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-}
-
+  Future<void> _initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
@@ -72,14 +74,16 @@ Future<void> _initializeNotifications() async {
   }
 
   Future<void> _scheduleTestNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
       'test_channel_id',
       'Test Notifications',
       channelDescription: 'Channel for test notifications',
       importance: Importance.max,
       priority: Priority.high,
     );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       0,
       'ทดสอบการแจ้งเตือน',
@@ -147,7 +151,8 @@ Future<void> _initializeNotifications() async {
               leading: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 child: Text(
-                  _auth.currentUser!.email?.substring(0, 1).toUpperCase() ?? 'U',
+                  _auth.currentUser!.email?.substring(0, 1).toUpperCase() ??
+                      'U',
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -230,8 +235,15 @@ Future<void> _initializeNotifications() async {
             subtitle: const Text('คำถามที่พบบ่อยและการติดต่อสนับสนุน'),
             leading: const Icon(Icons.help),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              // เปิดหน้าช่วยเหลือ
+            onTap: () async {
+              final url = Uri.parse('https://github.com/itzdeenzxx');
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('ไม่สามารถเปิดลิงก์ได้')),
+                );
+              }
             },
           ),
           const SizedBox(height: 20),

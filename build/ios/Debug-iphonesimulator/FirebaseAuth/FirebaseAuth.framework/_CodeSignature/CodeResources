@@ -82,11 +82,11 @@
 		</data>
 		<key>Modules/FirebaseAuth.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		QGaHX+mT+mp7D42Df7XTWSKtAdQ=
+		QRZmEiZxNN/uEmh3z9XDjyBOc0A=
 		</data>
 		<key>Modules/FirebaseAuth.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		OMlrFnLF1Wszoq9DJrlfB42xK7Y=
+		GHDcLGec6c29uu1mqK9LESlAA9o=
 		</data>
 		<key>Modules/FirebaseAuth.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -249,14 +249,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yp8wl+N+iLQOLdkHH1uq6z4NiaRXE3Ws+pOJkogUuJ4=
+			l9XDWiUIQFeR6CkYvPcOZFThORSgVQThNt7hNX6S9iE=
 			</data>
 		</dict>
 		<key>Modules/FirebaseAuth.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fNrXEaWqfCieB8VRdeNnz5eYa8qkR5MbxGvkKtvfBqE=
+			YCH9vhNvi86uXhR0+TN3TnzUTLuBMkh8TQgF4e27Emc=
 			</data>
 		</dict>
 		<key>Modules/FirebaseAuth.swiftmodule/arm64-apple-ios-simulator.abi.json</key>

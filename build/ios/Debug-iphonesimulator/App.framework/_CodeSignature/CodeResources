@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		Vk2M1mtzQNNhDi1/ER4iIpNhhT8=
+		zb3JpreUrZO4e520g/2qrNMtiv4=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		pV0YuOSsenTbuaABd6PgPFl/GQ0=
+		jCsge/MrwH3lfFU6fE5ONx4nZSA=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		G4+DK28/7xGmRIt/THCy0aXTEXs=
+		Y1FgeoUVN1v/koSX6iw/bcnSkKg=
 		</data>
 		<key>flutter_assets/NativeAssetsManifest.json</key>
 		<data>
@@ -40,6 +40,10 @@
 		<data>
 		BOnuHB/WcbSVEDrcqNUo0gDK7S4=
 		</data>
+		<key>flutter_assets/assets/images/CPR.png</key>
+		<data>
+		4TXcSVojYKiIDu36MSjB/qBecNc=
+		</data>
 		<key>flutter_assets/assets/images/Flood-warning.jpg</key>
 		<data>
 		P1BNQJWFJiJirrggmNIcOHYTS0A=
@@ -48,13 +52,73 @@
 		<data>
 		R3QHvzWeRdECSkQhiQvXy40uOc8=
 		</data>
+		<key>flutter_assets/assets/images/L.png</key>
+		<data>
+		gqFiVKt2u9pumH7AUYxMfl2GLl4=
+		</data>
+		<key>flutter_assets/assets/images/Rescue_unit.jpg</key>
+		<data>
+		D1ii7hh3f+e7873lLDfxVWbHs7I=
+		</data>
+		<key>flutter_assets/assets/images/boat.png</key>
+		<data>
+		rNzQHpXRSiRiz0/dPYlBamcOcSw=
+		</data>
 		<key>flutter_assets/assets/images/breaker.jpg</key>
 		<data>
 		kevGXEZ2lh91bM1ZoKbWSYwqOEw=
 		</data>
+		<key>flutter_assets/assets/images/car_flow.png</key>
+		<data>
+		dWMnEMDQmt6gqjYFeJvK4TekkoY=
+		</data>
+		<key>flutter_assets/assets/images/centipede.jpg</key>
+		<data>
+		LVt4GfxXusYbAORXJaW113DattU=
+		</data>
+		<key>flutter_assets/assets/images/cleaning.jpg</key>
+		<data>
+		qJDgqDmYb+X3+8+/XG8ur32TcVQ=
+		</data>
+		<key>flutter_assets/assets/images/cut-wound.png</key>
+		<data>
+		A/9AQHAaxrfvyIYhGFsXh51cNcA=
+		</data>
+		<key>flutter_assets/assets/images/danger.jpg</key>
+		<data>
+		xzzEr52F4wxqF5kwGvl2p0WT2Bc=
+		</data>
+		<key>flutter_assets/assets/images/deep_water.png</key>
+		<data>
+		pcBim0tBBPUSgjKg/NbEjmJowc4=
+		</data>
+		<key>flutter_assets/assets/images/document.png</key>
+		<data>
+		MVs3D1XI1RmsWKcI+5RcyETkM70=
+		</data>
 		<key>flutter_assets/assets/images/drinking_water.jpg</key>
 		<data>
 		nduxU+4BtTAfHINPBueCsjmzHyg=
+		</data>
+		<key>flutter_assets/assets/images/drinking_water.png</key>
+		<data>
+		Fi69ADSDsJ2pXP2nakAncj/VhFU=
+		</data>
+		<key>flutter_assets/assets/images/drowning.png</key>
+		<data>
+		ag/s67TnnD4n5tmucqKR4PMGEF4=
+		</data>
+		<key>flutter_assets/assets/images/drug.png</key>
+		<data>
+		ztMM1S2TaB+SDzMerPE6/cqEREQ=
+		</data>
+		<key>flutter_assets/assets/images/electric_current.jpg</key>
+		<data>
+		u0MOiRJgJn9I1hOPMGTHTMjXm9k=
+		</data>
+		<key>flutter_assets/assets/images/electricity2.png</key>
+		<data>
+		44qPf5DZTFFwA3PJqZjZF5SCbEs=
 		</data>
 		<key>flutter_assets/assets/images/evacuation.jpg</key>
 		<data>
@@ -68,17 +132,93 @@
 		<data>
 		Dw/XdbxODjog8ivZEIqjlC9eDm8=
 		</data>
+		<key>flutter_assets/assets/images/food_water.png</key>
+		<data>
+		ku+Wpp63RECk9XD2+aRHeVBHy+8=
+		</data>
+		<key>flutter_assets/assets/images/foot-wound.png</key>
+		<data>
+		XC1cs/i4E7EQn1SPkFW7bbnvvrs=
+		</data>
 		<key>flutter_assets/assets/images/guide-1.jpg</key>
 		<data>
 		/PT49y4WVHzp2IPQyZ5I5ac3/Tk=
+		</data>
+		<key>flutter_assets/assets/images/high_water.png</key>
+		<data>
+		HScZJKMQ/Y0bBXwqqkLL2eiKNzI=
+		</data>
+		<key>flutter_assets/assets/images/home.png</key>
+		<data>
+		tVlZ23A4xwLY19WX4OiVbE3O5bc=
+		</data>
+		<key>flutter_assets/assets/images/hospital.png</key>
+		<data>
+		ewkQ0PtL8II81bYTxSfk2bf07q0=
+		</data>
+		<key>flutter_assets/assets/images/house.jpg</key>
+		<data>
+		szc5nAveFN+j7UhDFIJve7w05vU=
+		</data>
+		<key>flutter_assets/assets/images/night.png</key>
+		<data>
+		IKNnJ84BsEfZrUd1Nl5FiWNw/AI=
 		</data>
 		<key>flutter_assets/assets/images/noodles.jpg</key>
 		<data>
 		EK+utBKWeX7QY7kIK/jdsT/m5WI=
 		</data>
+		<key>flutter_assets/assets/images/pipe.png</key>
+		<data>
+		GCi9td4bfcYjspmO2B19qCDWp1g=
+		</data>
+		<key>flutter_assets/assets/images/police.jpg</key>
+		<data>
+		ZXDjoPSVeL27pRxUqddBr/5obUs=
+		</data>
+		<key>flutter_assets/assets/images/powerbank.png</key>
+		<data>
+		gez+bT+CiOqdIUKleCUbPbSb5ok=
+		</data>
+		<key>flutter_assets/assets/images/safe_routes.png</key>
+		<data>
+		N6i88ofAvqqLRL2D3FF/z+twRrA=
+		</data>
+		<key>flutter_assets/assets/images/sandbag.png</key>
+		<data>
+		ft5QVKiVANGsJmMB/Co+wYvqy2s=
+		</data>
+		<key>flutter_assets/assets/images/scorpion.jpg</key>
+		<data>
+		jk5eTwhyupWa71mbTcH84E7t6NE=
+		</data>
 		<key>flutter_assets/assets/images/snake.jpg</key>
 		<data>
 		+PyyKLeyr2JxV/BYgoOarQuS0dM=
+		</data>
+		<key>flutter_assets/assets/images/snake2.jpg</key>
+		<data>
+		E3BRrRLPovQxiSoX2t2FWFW2q4A=
+		</data>
+		<key>flutter_assets/assets/images/trees.jpg</key>
+		<data>
+		6kFtUSKYZ4RJFgwkrMNbVlCf/Dc=
+		</data>
+		<key>flutter_assets/assets/images/unconscious.png</key>
+		<data>
+		ioCnjdCCCFEzAcDuJ6PiWVlaAJ8=
+		</data>
+		<key>flutter_assets/assets/images/walk.png</key>
+		<data>
+		GCzD+IZRJu49VCCw4Ayq0mMBFVs=
+		</data>
+		<key>flutter_assets/assets/images/water_flow.png</key>
+		<data>
+		7SR3VN323BOMmzdJMjQZ36fJuHU=
+		</data>
+		<key>flutter_assets/assets/images/water_levels.png</key>
+		<data>
+		e9biy7wnHqztBNIy28dpdBNmZ6k=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -90,7 +230,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		x5OLqq7lOzYxKcir+HZC04gOXNc=
+		41E+soIsGN65X3C0wOQ2PXjUfTo=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -111,14 +251,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ymTFomkh31kue/zUeYpPcgeWMMtZE3LTSe35Dz95lwE=
+			vekbjADUeIEaJv2/Tjhd0MXvSkileMXOEkO4eavZk8k=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OXH5mMgV5DHb9ur7TvLm3JIFj4vVzmW4WntH2JCS22o=
+			fYq7tFOSB3ZwLrDUgeJ5q388+TGTPARyUcLTzdhQ/Ps=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -132,7 +272,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4jH8PkeZs3ByD0vjkQnPTVOrF5U8XbD52QGmpFqdmkI=
+			EKREJbdi5pbRG6uu93/kTNOupOppeuXMOuvlgtK6I4w=
 			</data>
 		</dict>
 		<key>flutter_assets/NativeAssetsManifest.json</key>
@@ -163,6 +303,13 @@
 			EOJcWsgzGmMWZ51FigPINgVFl46mbKE6dBdSt31rFbM=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/CPR.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Rmhbmm5+Iz3FWNIOoti/1qZKmEJfjprgw1TCoayrKSA=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/Flood-warning.jpg</key>
 		<dict>
 			<key>hash2</key>
@@ -177,6 +324,27 @@
 			+739UR6kPuknM3R9BBCG7ZG7eP+LcN9U/dpXUUi+C78=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/L.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bkwKoM/SlNJsqJb30aitTvKqmD9V+to/fQ0iP8kdx2g=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/Rescue_unit.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cQRxJpXahfQhTeX6mxiez8TfMTrJC1nuVpepBAWFE4A=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/boat.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			2g3B87vsVpUgA9Crlfdrk+FDeiEH0WvEGbNjF5u4ibQ=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/breaker.jpg</key>
 		<dict>
 			<key>hash2</key>
@@ -184,11 +352,95 @@
 			P1Wk34eDVvyhjO53YZxe3nziRJ4VmbVNayZO90y+PTI=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/car_flow.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			orK5hqiOPmd4yZ4/aHDSOnX58N5gAgh7gsJccHHikag=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/centipede.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			4nJ+8KoWx9jGXVmyaCzyOaHR3Y4QgAGj1sAfUVI6psw=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/cleaning.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Q8KxpMvxBgQj+54FGl5OfoE5neCWE2b2UuE0mwZpQp8=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/cut-wound.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			7pcxU8vV4c0bHm3/An2lalsyQRYwTcEXp/WUfAoOq78=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/danger.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Ovbo1ZfE2e9uENYHLGEvrWEqfliw5OZiaNJZA6b/WBQ=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/deep_water.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0m9EFn5N0na+ZDysmi23FhTI+Ps8FXXL3jSlSsH+9lE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/document.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			5LR7ssn7nAqGIjQB+PqtqsiLVyD+anFzlBeN4dxV2U8=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/drinking_water.jpg</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			jroRxDUTJasvqGbFDHI9OtWO6CacQMgtazDPMYqoM1o=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/drinking_water.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			HNSqwZNS63exeSg0UlMidktxrhpFKFhs5QU/l9Knsj8=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/drowning.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ELKlG2AtYz0WJ63Tq1u4gYXOO0FxCQ+USGEpp9X6Md8=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/drug.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bpXcBo4QdkkeXWLP/hYQoSWa/7nQOuoUrZZx8JOkwLA=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/electric_current.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Vom9G56CxZGSBb96iZS1kbCJW84684TtMG3NOQ7H87k=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/electricity2.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			LG7nP8/d/FrHRdhnjDIbXd35aLyk3ZcOqtmeiikCWGc=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/evacuation.jpg</key>
@@ -212,11 +464,60 @@
 			rAy7E20ge5r2fqx/wWT1+aMwarbdn/GPU4WaTi93lwM=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/food_water.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			fltYGG6PyinyviFdoqeYfN8XRTUnLU8gJ7zq5myJgO4=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/foot-wound.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TJ5DsZ2vrSi3lqmgK+QJ1bgb1ieHfrMwWGfg4SIVwI4=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/guide-1.jpg</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			QtFl3tflfQkaoBEy/8fnqcM6q6N1YR3VsrifZUtHLpo=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/high_water.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zHxr8VLJe+u+9+fCUwvLA+T5VSsklu9l9JqLbdK9eFc=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/home.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ZBgWWnZvB0gbJ7GEax4ExeSb9BkSnQ5i+KGeogo/EdI=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/hospital.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			R5zjt2oFTNb+qBax8zrL7ecqxb0P4I6rbimaJwQvLVE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/house.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			xFGkjbRVGbd5c3n7ueBp67Hr+Em7cSDgfqh0osjE4sA=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/night.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0KvO5munNuFTLuNt3QGpurapokgFG7Qm6r5G019F4sY=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/noodles.jpg</key>
@@ -226,11 +527,95 @@
 			0lzOYjq/3RvdWxjAyoxDsGbbnTzUJliplXcUAgzxAho=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/images/pipe.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			wIarSfY/qAGYV5kaDIRyCl7Uva6FPBW+lbiQIf2nnbs=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/police.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TdRcTGIRF23f3p+BE62CZR67cji7MConJQvJZHwhPtM=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/powerbank.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6+h/JIbSap57G/Xl+odVAMDEzHUGaPMQGvd/3IJYZb4=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/safe_routes.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kSu6pe1SgT8SOnKum2Ng57cNEIUzf4Xpuwc8onWYje0=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/sandbag.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			r5hPnIaFXNr/ZdZaWOmtgR8ij9u5G+wjexrYvpvfENY=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/scorpion.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			UGZF90dmIywjTlOaNOkDSyno6LPx+Aoq/2gp/zq0QJo=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/images/snake.jpg</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			sHsSU6QU+888p/bnNZYQt46uw1KBy2HGSrJZK54/E78=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/snake2.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TnELNDIfqGphyCtcTFQ/3M5nUjHevkjmBvtb8oBRyjE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/trees.jpg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			I2YqwoTQ0gtw/PsjQzJCqrtKXpazBIPGNkhPGTW55XE=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/unconscious.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			XX/Fb7QSSX8KPzW0VH4rAX1U7sCmWkILqyWcR0UPbZU=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/walk.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			le4FeGclsXZzueiRAn49aGJGlCx33YGwIXdm2PC9npM=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/water_flow.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			i76Dapvq+QkpEABdDoPxKOly2/7R3oGvOek1tEt9lVM=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/images/water_levels.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			RTu8tJnm4O5pYj43ueWSJpVyXR3hDH9l/nmU3/3ERuI=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -251,7 +636,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4tJtw5biKzWRvhskZr/xF4jMDFMd9GzDlBQJgs0m8WI=
+			2MfXGEa5fk3MxpYNLS5hxMK+kivSXK61pMp/cgAzSM8=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
