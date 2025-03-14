@@ -50,7 +50,7 @@ class _DiseaseAnalyzerScreenState extends State<DiseaseAnalyzerScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 3),
+      bottomNavigationBar: const AppBottomNavigation(currentIndex: 2),
     );
   }
 

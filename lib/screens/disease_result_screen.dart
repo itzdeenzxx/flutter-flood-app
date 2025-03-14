@@ -276,7 +276,7 @@ class DiseaseResultScreen extends StatelessWidget {
       'คำอธิบาย: ${analysis.description}\n'
       'การป้องกัน: ${analysis.prevention}\n'
       'การรักษาเบื้องต้น: ${analysis.firstAid}\n\n'
-      'แอปพลิเคชันรอดชีวิตจากน้ำท่วม';
+      'แอปพลิเคชันรับมือน้ำท่วม';
 
     Share.share(
       shareText,
