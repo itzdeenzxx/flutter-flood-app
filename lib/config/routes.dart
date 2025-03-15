@@ -7,6 +7,7 @@ import 'package:flood_survival_app/screens/auth/login_screen.dart';
 import 'package:flood_survival_app/screens/auth/register_screen.dart';
 import 'package:flood_survival_app/screens/settings_screen.dart';
 
+
 class AppRoutes {
   static const String home = '/';
   static const String survivalGuide = '/survival-guide';
@@ -15,6 +16,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String settings = '/settings';
+  static const String chatbot = '/chatbot';
 
   static Map<String, WidgetBuilder> get routes => {
         home: (context) => const HomeScreen(),
@@ -24,5 +26,6 @@ class AppRoutes {
         healthCheck: (context) => const DiseaseAnalyzerScreen(),
         emergencyContacts: (context) => const EmergencyContactsScreen(),
         settings: (context) => const SettingsScreen(),
+
       };
 }

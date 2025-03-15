@@ -1,4 +1,3 @@
-//home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flood_survival_app/widgets/dashboard_card.dart';
 import 'package:flood_survival_app/widgets/guide_card.dart';
@@ -7,6 +6,8 @@ import 'package:flood_survival_app/models/survival_guide.dart';
 import 'package:flood_survival_app/config/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// เพิ่มการนำเข้าสำหรับแชทบอท
+import 'package:flood_survival_app/screens/chatbot_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -193,6 +194,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("เปิดแชทบอท");
+
+          //จุดเรียกแชทบอท
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChatbotScreen()),
+          );
+        },
+        backgroundColor: const Color(0xFF1E88E5),
+        tooltip: 'คุยกับแอลลี่',
+        child: const Icon(Icons.smart_toy, color: Colors.white),
+      ),
       bottomNavigationBar: const AppBottomNavigation(currentIndex: 0),
     );
   }
