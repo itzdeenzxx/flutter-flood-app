@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../services/flood_chatbot_service.dart';
-import '../models/flood_message.dart';
+
+/// สร้าง Model สำหรับ Message
+class FloodMessage {
+  final String text;
+  final bool isUser;
+  final DateTime createdAt;
+
+  FloodMessage({
+    required this.text,
+    required this.isUser,
+    DateTime? createdAt,
+  }) : createdAt = createdAt ?? DateTime.now();
+
+  String get formattedTime {
+    final time = createdAt;
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+  }
+}
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({Key? key}) : super(key: key);
@@ -20,11 +37,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   @override
   void initState() {
     super.initState();
-    _addBotMessage(
-      'สวัสดีค่ะ ฉันคือแอลลี่ ผู้เชี่ยวชาญด้านน้ำท่วม 🌊\nฉันสามารถช่วยคุณตอบคำถามเกี่ยวกับน้ำท่วม การเตรียมพร้อม การป้องกัน และการดูแลสุขภาพในช่วงน้ำท่วมได้ คุณอยากทราบเรื่องใดเกี่ยวกับน้ำท่วมคะ?'
-    );
+    // เริ่มต้นด้วยการส่งข้อความต้อนรับจากบอท
+    _addBotMessage('สวัสดีค่ะ ฉันคือแอลลี่ ผู้เชี่ยวชาญด้านน้ำท่วม 🌊\n'
+        'ฉันสามารถช่วยคุณตอบคำถามเกี่ยวกับน้ำท่วม การเตรียมพร้อม การป้องกัน และการดูแลสุขภาพในช่วงน้ำท่วมได้\n'
+        'คุณอยากทราบเรื่องใดเกี่ยวกับน้ำท่วมคะ?');
   }
 
+  /// ฟังก์ชันสำหรับสร้างข้อความบอท
   void _addBotMessage(String text) {
     setState(() {
       _messages.add(FloodMessage(text: text, isUser: false));
@@ -32,40 +51,73 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _scrollToBottom();
   }
 
-  void _handleSubmitted(String text) async {
-    _textController.clear();
-    
-    if (text.trim().isEmpty) return;
-
+  /// ฟังก์ชันสำหรับสร้างข้อความจากผู้ใช้
+  void _addUserMessage(String text) {
     setState(() {
       _messages.add(FloodMessage(text: text, isUser: true));
-      _isTyping = true;
     });
     _scrollToBottom();
+  }
+
+  /// เมื่อกดส่งข้อความหรือกด Enter
+  void _handleSubmitted(String text) async {
+    // เคลียร์ช่อง input
+    _textController.clear();
+
+    if (text.trim().isEmpty) return;
+
+    // เพิ่มข้อความผู้ใช้ลงใน list
+    _addUserMessage(text);
+
+    setState(() {
+      _isTyping = true;
+    });
 
     try {
+      // สร้างสตริงบทสนทนาก่อนหน้า (conversationHistory)
+      final conversationHistory = _buildConversationHistory();
+
+      // เรียก service
       final response = await FloodChatbotService.getChatbotResponse(
+        conversationHistory: conversationHistory,
         userMessage: text,
         sessionId: _sessionId,
       );
 
-      setState(() {
-        _isTyping = false;
-        _messages.add(FloodMessage(text: response, isUser: false));
-      });
-      _scrollToBottom();
+      // เพิ่มข้อความบอทลงใน list
+      _addBotMessage(response);
     } catch (e) {
+      _addBotMessage(
+          'ขออภัยค่ะ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง');
+    } finally {
       setState(() {
         _isTyping = false;
-        _messages.add(FloodMessage(
-          text: 'ขออภัยค่ะ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง',
-          isUser: false,
-        ));
       });
-      _scrollToBottom();
     }
   }
 
+  /// สร้างสตริงบทสนทนาก่อนหน้า
+  /// เพื่อส่งให้ API เข้าใจ context
+  String _buildConversationHistory() {
+    // จะรวบรวมเป็นแบบ
+    // User: ...
+    // Bot: ...
+    // User: ...
+    // Bot: ...
+    // ...
+    // แล้วส่งเป็นสตริงยาวๆ
+    final buffer = StringBuffer();
+    for (final msg in _messages) {
+      if (msg.isUser) {
+        buffer.writeln('User: ${msg.text}');
+      } else {
+        buffer.writeln('Bot: ${msg.text}');
+      }
+    }
+    return buffer.toString();
+  }
+
+  /// เมื่อข้อความใหม่ถูกเพิ่ม ให้เลื่อน ListView ลงล่างสุด
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -78,6 +130,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     });
   }
 
+  /// Widget หลัก
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +174,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           ),
           if (_isTyping)
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               color: Colors.white,
               child: const Row(
                 children: [
@@ -131,9 +185,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                     child: Text(
                       'อ',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold, 
-                        color: Colors.white
-                      ),
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                   SizedBox(width: 8.0),
@@ -141,59 +193,69 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 ],
               ),
             ),
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 5.0,
-                  spreadRadius: 1.0,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        hintText: 'พิมพ์คำถามเกี่ยวกับน้ำท่วม...',
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                      ),
-                      onSubmitted: _handleSubmitted,
-                    ),
-                  ),
-                  const SizedBox(width: 8.0),
-                  FloatingActionButton(
-                    onPressed: () => _handleSubmitted(_textController.text),
-                    backgroundColor: const Color(0xFF1E88E5),
-                    elevation: 2.0,
-                    child: const Icon(Icons.send, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _buildInputArea(),
         ],
       ),
     );
   }
 
+  /// สร้าง Widget สำหรับช่องกรอกข้อความและปุ่มส่ง
+  Widget _buildInputArea() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 5.0,
+            spreadRadius: 1.0,
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _textController,
+                decoration: InputDecoration(
+                  hintText: 'พิมพ์คำถามเกี่ยวกับน้ำท่วม...',
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[100],
+                ),
+                onSubmitted: _handleSubmitted,
+              ),
+            ),
+            const SizedBox(width: 8.0),
+            FloatingActionButton(
+              onPressed: () => _handleSubmitted(_textController.text),
+              backgroundColor: const Color(0xFF1E88E5),
+              elevation: 2.0,
+              child: const Icon(Icons.send, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// แสดงข้อความแต่ละรายการใน ListView
   Widget _buildMessageItem(FloodMessage message) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        mainAxisAlignment: message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!message.isUser) ...[
@@ -202,10 +264,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               radius: 16.0,
               child: const Text(
                 'อ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold, 
-                  color: Colors.white
-                ),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
             const SizedBox(width: 8.0),
@@ -215,7 +275,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.75,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
               decoration: BoxDecoration(
                 color: message.isUser ? const Color(0xFF1E88E5) : Colors.white,
                 borderRadius: BorderRadius.circular(16.0),
@@ -266,6 +327,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     );
   }
 
+  /// แสดง Dialog แนะนำตัว
   void _showInfoDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -287,18 +349,25 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
             ),
             SizedBox(height: 12.0),
             Text('• สาเหตุของน้ำท่วม', style: TextStyle(fontSize: 14.0)),
-            Text('• การเตรียมพร้อมรับมือน้ำท่วม', style: TextStyle(fontSize: 14.0)),
-            Text('• การปฐมพยาบาลและดูแลสุขภาพในช่วงน้ำท่วม', style: TextStyle(fontSize: 14.0)),
-            Text('• ข้อควรระวังในช่วงน้ำท่วม', style: TextStyle(fontSize: 14.0)),
-            Text('• วิธีการอพยพเมื่อเกิดน้ำท่วม', style: TextStyle(fontSize: 14.0)),
-            Text('• คำแนะนำในการทำความสะอาดบ้านหลังน้ำท่วม', style: TextStyle(fontSize: 14.0)),
-            Text('• โรคที่มักเกิดในช่วงน้ำท่วม', style: TextStyle(fontSize: 14.0)),
+            Text('• การเตรียมพร้อมรับมือน้ำท่วม',
+                style: TextStyle(fontSize: 14.0)),
+            Text('• การปฐมพยาบาลและดูแลสุขภาพในช่วงน้ำท่วม',
+                style: TextStyle(fontSize: 14.0)),
+            Text('• ข้อควรระวังในช่วงน้ำท่วม',
+                style: TextStyle(fontSize: 14.0)),
+            Text('• วิธีการอพยพเมื่อเกิดน้ำท่วม',
+                style: TextStyle(fontSize: 14.0)),
+            Text('• คำแนะนำในการทำความสะอาดบ้านหลังน้ำท่วม',
+                style: TextStyle(fontSize: 14.0)),
+            Text('• โรคที่มักเกิดในช่วงน้ำท่วม',
+                style: TextStyle(fontSize: 14.0)),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('เข้าใจแล้ว', style: TextStyle(color: Color(0xFF1E88E5))),
+            child: const Text('เข้าใจแล้ว',
+                style: TextStyle(color: Color(0xFF1E88E5))),
           ),
         ],
       ),

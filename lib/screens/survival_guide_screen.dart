@@ -320,7 +320,7 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                               };
                               _checklistItems.add(newItem);
                               _newItemController.clear();
-                              
+
                               // Save the new item to Firestore
                               _saveChecklistToFirestore();
                             });
@@ -412,6 +412,7 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
       ],
     );
   }
+
   // Method to save checklist to Firestore
   Future<void> _saveChecklistToFirestore() async {
     try {
@@ -424,12 +425,14 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
           'checklist': _checklistItems,
           'lastUpdated': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
-        
+
         // Calculate the preparedness percentage for the home screen
-        int completedItems = _checklistItems.where((item) => item['isChecked'] as bool).length;
+        int completedItems =
+            _checklistItems.where((item) => item['isChecked'] as bool).length;
         int totalItems = _checklistItems.length;
-        int preparednessPercentage = totalItems > 0 ? ((completedItems / totalItems) * 100).floor() : 0;
-        
+        int preparednessPercentage =
+            totalItems > 0 ? ((completedItems / totalItems) * 100).floor() : 0;
+
         // Update the user's preparedness percentage in Firestore
         await FirebaseFirestore.instance
             .collection('users')
@@ -449,22 +452,23 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
       setState(() {
         _isLoading = true;
       });
-      
+
       User? currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         DocumentSnapshot doc = await FirebaseFirestore.instance
             .collection('users')
             .doc(currentUser.uid)
             .get();
-        
+
         if (doc.exists && doc.data() != null) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           if (data.containsKey('checklist')) {
             List<dynamic> checklistData = data['checklist'];
             setState(() {
-              _checklistItems = checklistData.map((item) => 
-                Map<String, dynamic>.from(item as Map<String, dynamic>)
-              ).toList();
+              _checklistItems = checklistData
+                  .map((item) =>
+                      Map<String, dynamic>.from(item as Map<String, dynamic>))
+                  .toList();
             });
           } else {
             // If user doesn't have a checklist yet, save the default one
@@ -475,7 +479,7 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
           _saveChecklistToFirestore();
         }
       }
-      
+
       setState(() {
         _isLoading = false;
       });
@@ -582,26 +586,6 @@ class _SurvivalGuideScreenState extends State<SurvivalGuideScreen>
                   (index) => _buildStepItem(index + 1, guide.steps[index]),
                 ),
                 const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: () {
-                    // บันทึกคู่มือนี้ไว้ในรายการโปรด
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('เพิ่มในรายการโปรดแล้ว'),
-                      ),
-                    );
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4865E7),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text('บันทึกในรายการโปรด'),
-                ),
               ],
             );
           },

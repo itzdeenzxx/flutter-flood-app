@@ -1,6 +1,5 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../models/flood_message.dart';
 
 class FloodChatbotService {
   static const String _apiKey = 'kOOudAlAEDw4J2CbSeKZSXRVkpB37Wc3';
@@ -8,10 +7,23 @@ class FloodChatbotService {
   static const String _baseUrl = 'https://api.aiforthai.in.th';
 
   static Future<String> getChatbotResponse({
+    required String conversationHistory,
     required String userMessage,
     required String sessionId,
   }) async {
     try {
+      // สร้าง context เพื่อส่งให้โมเดล (รวมบทบาท + ประวัติ + คำถาม)
+      final String context = '''
+คุณคือ "แอลลี่" ผู้หญิงที่เชี่ยวชาญด้านน้ำท่วมที่มีความรู้ลึกซึ้งเกี่ยวกับเหตุการณ์น้ำท่วม 
+บทสนทนาก่อนหน้า:
+$conversationHistory
+
+คำถามล่าสุดจากผู้ใช้: "$userMessage"
+''';
+
+      // ให้ prompt เป็นคำสั่งสั้น ๆ
+      final String prompt = 'โปรดตอบคำถามของผู้ใช้อย่างเป็นกันเองและกระชับ';
+
       final response = await http.post(
         Uri.parse('$_baseUrl/pathumma-chat'),
         headers: {
@@ -20,21 +32,11 @@ class FloodChatbotService {
           'X-lib': _packageName,
         },
         body: {
-          'context': userMessage,
-          'prompt': '''
-            คุณคือ "แอลลี่" ผู้เชี่ยวชาญด้านน้ำท่วมที่มีความรู้ลึกซึ้งเกี่ยวกับเหตุการณ์น้ำท่วม คุณสามารถให้ข้อมูลที่ถูกต้องและเชื่อถือได้เกี่ยวกับทุกแง่มุมของน้ำท่วม รวมถึงการป้องกันและการจัดการน้ำท่วมในระดับบุคคล ชุมชน และระดับเมือง แอลลี่จะตอบคำถามของผู้ใช้ด้วยข้อมูลที่มีความแม่นยำ ใช้ภาษาที่เป็นกันเอง เข้าใจง่าย และตรงประเด็น โดยมีจุดมุ่งหมายที่จะให้คำแนะนำที่เป็นประโยชน์และสามารถนำไปปฏิบัติได้จริง
-**ข้อกำหนดในการตอบ:**  
-- ตอบคำถามให้ชัดเจน กระชับ ไม่เกิน 3-4 ย่อหน้า  
-- ใช้ภาษาที่เข้าใจง่ายและเป็นกันเอง  
-- อ้างอิงข้อมูลจากหลักวิทยาศาสตร์ ข้อเท็จจริงที่เชื่อถือได้ หรือแนวปฏิบัติที่ได้รับการยอมรับในระดับสากล  
-- หากคำถามไม่เกี่ยวกับน้ำท่วม ให้แจ้งว่า "แอลลี่สามารถตอบได้เฉพาะคำถามเกี่ยวกับน้ำท่วมเท่านั้น"  
-- ให้คำแนะนำที่มีความเป็นมิตรและคำนึงถึงความปลอดภัยของผู้ถามเสมอ
-
-โปรดตอบคำถามของผู้ใช้เกี่ยวกับน้ำท่วมตามขอบเขตที่กำหนดและเป็นไปตามข้อกำหนดนี้
-
-          ''',
+          'context': context,
+          'prompt': prompt,
           'sessionid': sessionId,
-          'temperature': '0.3',
+          // ลองปรับค่า temperature ดูได้ตามใจชอบ
+          'temperature': '0.5',
         },
       ).timeout(const Duration(seconds: 30));
 

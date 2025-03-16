@@ -158,7 +158,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               title: Text(_auth.currentUser!.email ?? 'ผู้ใช้'),
               subtitle: const Text('บัญชีของคุณ'),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 // เปิดหน้าโปรไฟล์ผู้ใช้
               },
@@ -182,40 +181,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             value: _notificationsEnabled,
             onChanged: (bool value) {
               _toggleNotifications(value);
-            },
-          ),
-          // ภาษา
-          ListTile(
-            title: const Text('ภาษา'),
-            subtitle: Text('เลือกภาษาที่ต้องการใช้: $_selectedLanguage'),
-            leading: const Icon(Icons.language),
-            trailing: DropdownButton<String>(
-              value: _selectedLanguage,
-              underline: Container(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    _selectedLanguage = newValue;
-                  });
-                  _saveSettings();
-                }
-              },
-              items: _languages.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-          // การดาวน์โหลดข้อมูลออฟไลน์
-          ListTile(
-            title: const Text('การดาวน์โหลดข้อมูลออฟไลน์'),
-            subtitle: const Text('จัดการข้อมูลที่ดาวน์โหลดไว้ใช้งานออฟไลน์'),
-            leading: const Icon(Icons.download),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              // เปิดหน้าจัดการข้อมูลออฟไลน์
             },
           ),
           const Divider(),

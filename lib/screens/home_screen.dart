@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('รับมือน้ำท่วม'),
+        title: const Text('WaveChill'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // แถบย่อข้อมูลแจ้งเตือนระดับน้ำในพื้นที่
-                    _buildWaterLevelAlert(),
+                    // _buildWaterLevelAlert(),
 
                     const SizedBox(height: 16),
 
@@ -240,63 +240,63 @@ class _HomeScreenState extends State<HomeScreen> {
     return items;
   }
 
-  Widget _buildWaterLevelAlert() {
-    Color alertColor;
-    String alertText;
+  // Widget _buildWaterLevelAlert() {
+  //   Color alertColor;
+  //   String alertText;
 
-    switch (waterLevelRisk) {
-      case 1:
-        alertColor = Colors.green;
-        alertText = 'ระดับความเสี่ยงต่ำ';
-        break;
-      case 2:
-        alertColor = Colors.orange;
-        alertText = 'ระดับความเสี่ยงปานกลาง';
-        break;
-      case 3:
-        alertColor = Colors.red;
-        alertText = 'ระดับความเสี่ยงสูง';
-        break;
-      default:
-        alertColor = Colors.green;
-        alertText = 'ระดับความเสี่ยงต่ำ';
-    }
+  //   switch (waterLevelRisk) {
+  //     case 1:
+  //       alertColor = Colors.green;
+  //       alertText = 'ระดับความเสี่ยงต่ำ';
+  //       break;
+  //     case 2:
+  //       alertColor = Colors.orange;
+  //       alertText = 'ระดับความเสี่ยงปานกลาง';
+  //       break;
+  //     case 3:
+  //       alertColor = Colors.red;
+  //       alertText = 'ระดับความเสี่ยงสูง';
+  //       break;
+  //     default:
+  //       alertColor = Colors.green;
+  //       alertText = 'ระดับความเสี่ยงต่ำ';
+  //   }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        color: alertColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: alertColor.withOpacity(0.5)),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.warning_amber_rounded, color: alertColor),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  alertText,
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: alertColor),
-                ),
-                Text(
-                  'ระดับน้ำในพื้นที่: $waterLevel ซม.',
-                  style: TextStyle(color: Colors.grey[800]),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: () {}, // TODO: หน้าแสดงข้อมูลระดับน้ำ
-            child: const Text('ดูเพิ่มเติม'),
-          ),
-        ],
-      ),
-    );
-  }
+  //   return Container(
+  //     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+  //     decoration: BoxDecoration(
+  //       color: alertColor.withOpacity(0.1),
+  //       borderRadius: BorderRadius.circular(12),
+  //       border: Border.all(color: alertColor.withOpacity(0.5)),
+  // ),
+  // child: Row(
+  //   children: [
+  //     Icon(Icons.warning_amber_rounded, color: alertColor),
+  //     const SizedBox(width: 8),
+  //     Expanded(
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             alertText,
+  //             style:
+  //                 TextStyle(fontWeight: FontWeight.bold, color: alertColor),
+  //           ),
+  //           Text(
+  //             'ระดับน้ำในพื้นที่: $waterLevel ซม.',
+  //             style: TextStyle(color: Colors.grey[800]),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //     TextButton(
+  //       onPressed: () {}, // TODO: หน้าแสดงข้อมูลระดับน้ำ
+  //       child: const Text('ดูเพิ่มเติม'),
+  //     ),
+  //   ],
+  // ),
+  //   );
+  // }
 
   Widget _buildPreparednessItem(String label, bool isCompleted) {
     return Padding(
