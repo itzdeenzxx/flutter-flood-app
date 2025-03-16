@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -36,20 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-        
-        // If login is successful, navigate to home screen
+
         if (mounted) {
           Navigator.pushReplacementNamed(context, AppRoutes.home);
         }
       } on FirebaseAuthException catch (e) {
         setState(() {
-          if (e.code == 'user-not-found') {
-            _errorMessage = 'ไม่พบอีเมลนี้ในระบบ';
-          } else if (e.code == 'wrong-password') {
-            _errorMessage = 'รหัสผ่านไม่ถูกต้อง';
-          } else {
-            _errorMessage = 'เกิดข้อผิดพลาด: ${e.message}';
-          }
+          _errorMessage = _getFirebaseError(e.code);
         });
       } catch (e) {
         setState(() {
@@ -62,6 +56,19 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         }
       }
+    }
+  }
+
+  String _getFirebaseError(String code) {
+    switch (code) {
+      case 'user-not-found':
+        return 'ไม่พบอีเมลนี้ในระบบ';
+      case 'wrong-password':
+        return 'รหัสผ่านไม่ถูกต้อง';
+      case 'invalid-email':
+        return 'รูปแบบอีเมลไม่ถูกต้อง';
+      default:
+        return 'เกิดข้อผิดพลาด: $code';
     }
   }
 
@@ -101,7 +108,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Text(
                             'เข้าสู่ระบบ',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
                             textAlign: TextAlign.center,
@@ -121,7 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (value == null || value.isEmpty) {
                                 return 'กรุณากรอกอีเมล';
                               }
-                              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                  .hasMatch(value)) {
                                 return 'กรุณากรอกอีเมลให้ถูกต้อง';
                               }
                               return null;
@@ -130,10 +141,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 16),
                           TextFormField(
                             controller: _passwordController,
-                            obscureText: true,
+                            obscureText: _obscurePassword,
                             decoration: InputDecoration(
                               labelText: 'รหัสผ่าน',
                               prefixIcon: const Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -149,9 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: () {
-                                // TODO: Add forgot password functionality
-                              },
+                              onPressed: _login,
                               child: const Text('ลืมรหัสผ่าน?'),
                             ),
                           ),
@@ -177,7 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ElevatedButton(
                             onPressed: _isLoading ? null : _login,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(

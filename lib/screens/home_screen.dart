@@ -1,12 +1,14 @@
+// lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flood_survival_app/widgets/dashboard_card.dart';
 import 'package:flood_survival_app/widgets/guide_card.dart';
 import 'package:flood_survival_app/widgets/bottom_navigation.dart';
 import 'package:flood_survival_app/models/survival_guide.dart';
 import 'package:flood_survival_app/config/routes.dart';
+import 'package:flood_survival_app/models/news_model.dart'; // เพิ่ม import
+import 'package:flood_survival_app/services/news_service.dart'; // เพิ่ม import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// เพิ่มการนำเข้าสำหรับแชทบอท
 import 'package:flood_survival_app/screens/chatbot_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,25 +19,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // ข้อมูลจำลองสถานะการเตรียมพร้อม
   int preparednessPercentage = 0;
   final int waterLevel = 120; // ระดับน้ำในซม.
   final int waterLevelRisk = 2; // ระดับความเสี่ยง 1-3
 
-  // ข้อมูลเช็คลิสต์
   List<Map<String, dynamic>> _checklistItems = [];
   bool _isLoading = true;
 
-  // ข้อมูลตัวอย่างคำแนะนำด่วน
   final List<SurvivalGuide> quickGuides = SurvivalGuide.getSampleGuides();
+  late List<NewsItem> latestNews; // เพิ่มตัวแปรเก็บข่าวล่าสุด
 
   @override
   void initState() {
     super.initState();
+    // ดึงข่าวล่าสุด 3 รายการ
     _loadChecklistFromFirestore();
+    latestNews = NewsService.getNewsByCategory('ข่าวล่าสุด').take(3).toList();
   }
 
-  // โหลดข้อมูลเช็คลิสต์จาก Firestore
   Future<void> _loadChecklistFromFirestore() async {
     setState(() {
       _isLoading = true;
@@ -81,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // คำนวณเปอร์เซ็นต์ความพร้อม
   void _calculatePreparedness() {
     if (_checklistItems.isEmpty) {
       preparednessPercentage = 0;
@@ -182,14 +182,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     const SizedBox(height: 24),
-
-                    // ส่วนแสดงคำแนะนำวันนี้
                     _buildTodayGuides(),
-
                     const SizedBox(height: 24),
-
-                    // ส่วนบัตรแสดงการตรวจสุขภาพ
-                    _buildHealthCheck(),
+                    const SizedBox(height: 16),
+                    _buildLatestNews(), // เพิ่มส่วนแสดงข่าวล่าสุด
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -212,7 +209,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // สร้างรายการเช็คลิสต์จาก Firestore
   List<Widget> _buildPreparednessItems() {
     List<Widget> items = [];
 
@@ -283,24 +279,18 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   alertText,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: alertColor,
-                  ),
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: alertColor),
                 ),
                 Text(
                   'ระดับน้ำในพื้นที่: $waterLevel ซม.',
-                  style: TextStyle(
-                    color: Colors.grey[800],
-                  ),
+                  style: TextStyle(color: Colors.grey[800]),
                 ),
               ],
             ),
           ),
           TextButton(
-            onPressed: () {
-              // นำทางไปหน้าแสดงข้อมูลระดับน้ำโดยละเอียด
-            },
+            onPressed: () {}, // TODO: หน้าแสดงข้อมูลระดับน้ำ
             child: const Text('ดูเพิ่มเติม'),
           ),
         ],
@@ -346,16 +336,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const Text(
               'คำแนะนำวันนี้',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.survivalGuide);
-              },
-              child: const Text('ปรับแต่ง →'),
+              onPressed: () =>
+                  Navigator.pushNamed(context, AppRoutes.survivalGuide),
+              child: const Text('ดูทั้งหมด →'),
             ),
           ],
         ),
@@ -366,76 +352,174 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: quickGuides.length,
             itemBuilder: (context, index) {
-              final guide = quickGuides[index]; // <-- ใช้ตัวนี้เป็นค่า guide
-
               return Padding(
                 padding: const EdgeInsets.only(right: 12.0),
-                child: GuideCard(
-                  guide: guide,
-                  onTap: () {
-                    Navigator.pushNamed(
+                child: AbsorbPointer(
+                  absorbing: true, // กำหนดให้ widget นี้ไม่ตอบสนองต่อการกด
+                  child: GuideCard.fromImportance(
+                    quickGuides[index],
+                    () => Navigator.pushNamed(
                       context,
                       AppRoutes.survivalGuide,
-                      arguments: guide.id,
-                    );
-                  },
-                  cardColor: index == 0
-                      ? const Color(0xFFFF6B6B)
-                      : index == 1
-                          ? const Color(0xFF4865E7)
-                          : const Color(0xFF42B9A0),
+                      arguments: quickGuides[index].id,
+                    ),
+                  ),
                 ),
               );
             },
           ),
-        )
+        ),
       ],
     );
   }
 
-  Widget _buildHealthCheck() {
-    return DashboardCard(
-      title: 'ตรวจสุขภาพ',
-      actionText: 'วันนี้ →',
-      onActionTap: () {
-        Navigator.pushNamed(context, AppRoutes.healthCheck);
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildHealthIcon(Icons.spa, 'สุขภาพ'),
-          _buildHealthIcon(Icons.water_drop, 'น้ำดื่ม'),
-          _buildHealthIcon(Icons.medical_services, 'ยา'),
-          _buildHealthIcon(Icons.person, 'บุคคล'),
-        ],
+  // เพิ่มฟังก์ชันสำหรับแสดงข่าวล่าสุด
+  Widget _buildLatestNews() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'ข่าวสารสถานการณ์น้ำท่วม',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pushNamed(context, AppRoutes.news),
+              child: const Text('ดูทั้งหมด →'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        ...latestNews.map((news) => _buildNewsItem(news)).toList(),
+      ],
+    );
+  }
+
+  // สร้าง Widget แสดงข่าวแต่ละรายการ
+  Widget _buildNewsItem(NewsItem news) {
+    final theme = Theme.of(context);
+    Color urgencyColor;
+
+    switch (news.urgency) {
+      case NewsUrgency.high:
+        urgencyColor = Colors.red;
+        break;
+      case NewsUrgency.medium:
+        urgencyColor = Colors.orange;
+        break;
+      case NewsUrgency.low:
+        urgencyColor = Colors.green;
+        break;
+    }
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          print(news.id);
+          Navigator.pushNamed(
+            context,
+            AppRoutes.newsDetail,
+            arguments: news.id,
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // รูปภาพข่าว
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: Image.asset(
+                news.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: theme.primaryColor.withOpacity(0.1),
+                    child: const Center(
+                      child: Icon(Icons.image, size: 24),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // เนื้อหาข่าว
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: urgencyColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            _getUrgencyText(news.urgency),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          news.date,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      news.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      news.description,
+                      style: const TextStyle(fontSize: 12),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHealthIcon(IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: const Color(0xFF4865E7).withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            icon: Icon(icon, color: const Color(0xFF4865E7)),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.healthCheck);
-            },
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
-        ),
-      ],
-    );
+  // เพิ่มฟังก์ชันแปลงความสำคัญของข่าว
+  String _getUrgencyText(NewsUrgency urgency) {
+    switch (urgency) {
+      case NewsUrgency.high:
+        return 'ด่วนที่สุด';
+      case NewsUrgency.medium:
+        return 'สำคัญ';
+      case NewsUrgency.low:
+        return 'ทั่วไป';
+    }
   }
 }

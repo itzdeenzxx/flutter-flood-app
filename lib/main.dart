@@ -34,7 +34,13 @@ class FloodSurvivalApp extends StatelessWidget {
           themeMode: themeProvider.themeMode,
           initialRoute: AppRoutes.login,
           routes: AppRoutes.routes,
-          debugShowCheckedModeBanner: false,
+          onGenerateRoute: AppRoutes.onGenerateRoute,
+          onUnknownRoute: (settings) => MaterialPageRoute(
+            builder: (context) => const Scaffold(
+              body: Center(child: Text('ไม่พบหน้าที่ต้องการ')),
+            ),
+          ),
+          debugShowCheckedModeBanner: false, // Moved inside MaterialApp
         );
       },
     );
