@@ -59,6 +59,32 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // ฟังก์ชันสำหรับรีเซ็ตรหัสผ่าน
+  Future<void> _forgotPassword() async {
+    final email = _emailController.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("กรุณากรอกอีเมลก่อนนะ")),
+      );
+      return;
+    }
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("ส่งลิงค์รีเซ็ตรหัสผ่านไปยังอีเมลของคุณแล้ว!")),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("มีข้อผิดพลาด: ${e.message}")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("มีข้อผิดพลาด: $e")),
+      );
+    }
+  }
+
   String _getFirebaseError(String code) {
     switch (code) {
       case 'user-not-found':
@@ -170,10 +196,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           const SizedBox(height: 8),
+                          // เปลี่ยนปุ่มนี้ให้เรียก _forgotPassword()
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                              onPressed: _login,
+                              onPressed: _forgotPassword,
                               child: const Text('ลืมรหัสผ่าน?'),
                             ),
                           ),
